@@ -1,0 +1,60 @@
+# Docker
+# Build and push an image to Azure Container Registry
+# https://docs.microsoft.com/azure/devops/pipelines/languages/docker
+
+trigger:
+  branches:
+    include:
+      - main
+  paths:
+    include:
+      - frontend/*
+
+pool:
+  name: ubuntu-latest1
+
+resources:
+- repo: self
+
+variables:
+  group: AI-SECRETS
+  # Container registry service connection established during pipeline creation
+  dockerRegistryServiceConnection: '1a756c72-e765-4d76-bdbb-6a5d5bf4ac60'
+  imageRepository: 'remotingai'
+  containerRegistry: 'remoting.azurecr.io'
+  dockerfilePath: '$(Build.SourcesDirectory)/frontend/dockerfile'
+  buildContext: '$(Build.SourcesDirectory)/frontend'
+  tag: 'frontend-dev-latest'
+  days: '3'
+  SC: 'd01ccefb-f2da-4e1b-a7b0-35b38da0d007'
+  BACKEND_URL: $(BACKEND_URL-G)
+  # REFERER: $(REFERER-G)
+  # OPENAI_API_KEY: $(OPENAI_API_KEY-G)
+  # GROQ_API_KEY: $(GROQ_API_KEY-G)
+
+steps:
+- task: replacetokens@6
+  inputs:
+    root: '$(buildContext)'
+    sources: '.env'
+    tokenPattern: 'azpipelines'
+- task: Docker@2
+  displayName: 'Building the image'
+  inputs:
+    containerRegistry: '$(dockerRegistryServiceConnection)'
+    repository: '$(imageRepository)'
+    command: 'build'
+    Dockerfile: '$(dockerfilePath)'
+    buildContext: '$(buildContext)'
+    tags: $(tag)
+
+- script: |
+    docker save $(containerRegistry)/$(imageRepository):$(tag) -o $(Build.ArtifactStagingDirectory)/$(tag).tar
+  displayName: 'Save Docker image to tar file'
+
+- task: PublishBuildArtifacts@1
+  displayName: 'Publish build artifact'
+  inputs:
+    PathtoPublish: '$(Build.ArtifactStagingDirectory)'
+    ArtifactName: 'release'
+    publishLocation: 'Container'

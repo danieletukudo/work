@@ -1,0 +1,17 @@
+{
+  "session_history": {
+    "items": [
+      {
+        "id": "item_743417fcc52a",
+        "type": "agent_handoff",
+        "new_agent_id": "default_agent"
+      }
+    ]
+  },
+  "real_time_transcript": {
+    "user_transcript": "",
+    "agent_transcript": "",
+    "conversation_history": []
+  },
+  "timestamp": "20251215_072740"
+}

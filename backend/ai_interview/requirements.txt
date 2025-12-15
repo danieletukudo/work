@@ -1,0 +1,10 @@
+o
+
+
+
+
+openai fastapi pydantic python-dotenv azure-storage-blob opencv-python
+mediapipe numpy livekit livekit-plugins-deepgram livekit-plugins-elevenlabs
+
+
+livekit-plugins-openai livekit-plugins-silero aiohttp requests humanfriendly
