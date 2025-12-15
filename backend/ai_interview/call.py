@@ -10,7 +10,10 @@ def get_ai_cv_data(jobid, appid):
     try:
         response = requests.get(url, params=params, timeout=10)
         response.raise_for_status()   # Will raise HTTPError if status is 4xx or 5xx
+
+
         return response.json()
+        # return data
     except requests.exceptions.RequestException as e:
         print("Error making GET request:", e)
         return None

@@ -46,7 +46,11 @@ def extract_info():
         print(f"Title:           {job_desc.get('title', 'N/A')}")
         print(f"Department:      {job_desc.get('department', 'N/A')}")
         print(f"Location:        {job_desc.get('location') or 'Not specified'}")
+
+
+
         print(f"Employment Type: {job_desc.get('employment_type', 'N/A')}")
+
         
         # Handling the HTML summary
         raw_summary = job_desc.get('summary', '')

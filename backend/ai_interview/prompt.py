@@ -168,37 +168,46 @@ def format_interview_transcript(transcript_data: dict) -> str:
     return formatted
 
 
-def get_instruction(company_name: str, company_values: str, company_vision: str,
-                   job_title: str, job_objectives: str,
-                   job_summary: str, job_skills: list,
-                   candidate_name: str) -> str:
+def get_instruction(job_title: str, job_summary: str, job_skills: list,
+                   candidate_name: str, cv_skills: list = None) -> str:
    """
-   Build the interview instructions using only the minimal required context:
+   Build the interview instructions using only the API-provided data:
    - job_title
    - job_summary (clean text)
    - job_skills (list)
    - candidate_name
+   - cv_skills (optional, candidate's skills from CV)
    """
 
-   # Format skills list as bullets
-   skills_section = ""
+   # Format job skills list as bullets
+   job_skills_section = ""
    if job_skills:
-       skills_section = "\n".join([f"- {skill}" for skill in job_skills])
+       job_skills_section = "\n".join([f"- {skill}" for skill in job_skills])
    else:
-       skills_section = "- Not specified"
+       job_skills_section = "- Not specified"
+
+   # Format CV skills list as bullets (optional)
+   cv_skills_section = ""
+   if cv_skills:
+       cv_skills_section = "\n".join([f"- {skill}" for skill in cv_skills])
+   else:
+       cv_skills_section = "- Not provided"
 
    INSTRUCTIONS = f"""
-   You are an expert interviewer agent representing **{company_name}** —
-   a company that values **{company_values}** and is driven by the vision: *"{company_vision}"*.
+   You are an expert interviewer agent conducting a job interview.
 
    Your task is to conduct a structured, conversational job interview for the position of
-   **{job_title}** with objectives: {job_objectives}.
+   **{job_title}**.
 
-   ### Minimal role context to guide your questions
+   ### Job Context
    - Job summary: {job_summary or "Not provided"}
-   - Key skills: 
-{skills_section}
+   - Required skills: 
+{job_skills_section}
+   
+   ### Candidate Information
    - Candidate name: {candidate_name}
+   - Candidate's CV skills: 
+{cv_skills_section}
 
    ---
 

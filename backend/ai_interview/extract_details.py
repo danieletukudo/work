@@ -35,8 +35,9 @@ output = {
     "job_summary": clean_summary,
     "job_skills": job.get("skills"),
     "candidate_name": candidate.get("candidate_name"),
-    "candidate_email": candidate.get("candidate_email"),
     "cv_skills": candidate['candidate_cv']['skills'],
+    "candidate_email": candidate.get("candidate_email"),
+
     "cv_file": candidate['candidate_cv']['career_summary']
 }
 

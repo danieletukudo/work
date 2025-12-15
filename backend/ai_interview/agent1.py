@@ -52,10 +52,8 @@ transcript_data = {
     "conversation_history": []
 }
 
-# Global storage for interview metadata (jobid, appid, etc.)
+# Global storage for interview metadata
 interview_metadata = {
-    "jobid": None,
-    "appid": None,
     "job_title": None,
     "candidate_name": None
 }
@@ -74,18 +72,12 @@ def clean_html(text):
 def fetch_job_and_candidate_data(jobid: Optional[str] = None, appid: Optional[str] = None):
     """
     Fetch job and candidate data from API using jobid and appid.
-    Returns only the fields provided by the API output.
+    jobid and appid are only used here to call call.py's get_ai_cv_data().
+    Returns only the fields provided by the API output (no jobid/appid in return).
     """
-    # Get jobid and appid from environment variables if not provided
-    if not jobid:
-        jobid = os.getenv("JOB_ID")
-    if not appid:
-        appid = os.getenv("APP_ID")
-    
-    # If still not available, use defaults or return None
+    # jobid and appid must be provided (extracted from room name or passed in)
     if not jobid or not appid:
         logger.warning(f"⚠️ Missing jobid or appid. jobid: {jobid}, appid: {appid}")
-        logger.info("Using default values for interview")
         return None
     
     try:
@@ -110,7 +102,7 @@ def fetch_job_and_candidate_data(jobid: Optional[str] = None, appid: Optional[st
         job_summary = job_description.get('summary', '')
         clean_summary = clean_html(job_summary)
         
-        # Build output strictly from API fields
+        # Build output strictly from API fields (no jobid/appid - only used in call.py)
         extracted_data = {
             "status": api_data.get("status"),
             "message": api_data.get("message"),
@@ -120,9 +112,7 @@ def fetch_job_and_candidate_data(jobid: Optional[str] = None, appid: Optional[st
             "candidate_name": candidate_data.get("candidate_name"),
             "candidate_email": candidate_data.get("candidate_email"),
             "cv_skills": candidate_data.get("candidate_cv", {}).get("skills"),
-            "cv_file": candidate_data.get("candidate_cv", {}).get("career_summary"),
-            "jobid": jobid,
-            "appid": appid
+            "cv_file": candidate_data.get("candidate_cv", {}).get("career_summary")
         }
         
         logger.info(f"✅ Successfully fetched data for {extracted_data['candidate_name']} - {extracted_data['job_title']}")
@@ -189,7 +179,7 @@ async def write_transcript(session: AgentSession) -> Optional[str]:
         "session_history": session.history.to_dict(),
         "real_time_transcript": transcript_data,
         "timestamp": current_date,
-        "interview_metadata": interview_metadata  # Include jobid, appid, etc.
+        "interview_metadata": interview_metadata
     }
 
     with open(absolute_path, 'w') as f:
@@ -259,7 +249,7 @@ async  def evaluate_interview(
             "candidate_id": participant_id,
             "candidate_email": f"{participant_id}@example.com",
             "candidate_name": participant_id.replace("_", " ").title(),
-            "job_id": os.getenv("JOB_ID", "default_job")
+            "job_id": "unknown"
         }
 
     if not job_description:
@@ -638,7 +628,7 @@ async def entrypoint(ctx: JobContext):
     ctx.add_shutdown_callback(shutdown_callback)
     await ctx.connect()
 
-    # Extract jobid and appid from room name or environment variables
+    # Extract jobid and appid from room name (only used to pass to call.py via fetch_job_and_candidate_data)
     # Room name format: voice_assistant_room_{jobid}_{appid}_{suffix} or voice_assistant_room_{suffix}
     jobid = None
     appid = None
@@ -658,66 +648,40 @@ async def entrypoint(ctx: JobContext):
             except (ValueError, IndexError):
                 pass
     
-    # Fallback to environment variables if not found in room name
-    if not jobid:
-        jobid = os.getenv("JOB_ID")
-    if not appid:
-        appid = os.getenv("APP_ID")
-    
-    logger.info(f"📋 Interview setup - jobid: {jobid}, appid: {appid}")
-    
-    # Fetch real job and candidate data
+    # Fetch real job and candidate data (jobid/appid only used here to call call.py)
     interview_data = fetch_job_and_candidate_data(jobid, appid)
     
-    # Store interview metadata globally for transcript
+    # Store interview metadata globally for transcript (no jobid/appid stored)
     if interview_data:
-        interview_metadata["jobid"] = interview_data.get("jobid")
-        interview_metadata["appid"] = interview_data.get("appid")
         interview_metadata["job_title"] = interview_data.get("job_title")
         interview_metadata["candidate_name"] = interview_data.get("candidate_name")
-        interview_metadata["candidate_email"] = interview_data.get("candidate_email")
-        interview_metadata["cv_file"] = interview_data.get("cv_file")
-        interview_metadata["cv_skills"] = interview_data.get("cv_skills")
     
-    # Prepare instruction parameters
-    if interview_data:
-        # Use real data from API
-        company_name = "Remote.ai"  # Default, can be made configurable
-        company_values = "Excellence and Innovation"  # Default, can be made configurable
-        company_vision = "To connect the best talent with the best opportunities"  # Default, can be made configurable
-        job_title = interview_data["job_title"]
-        job_objectives = f"Assess the candidate's fit for {job_title} position"
-        job_summary = interview_data.get("job_summary")
-        job_skills = interview_data.get("job_skills")
-        candidate_name = interview_data.get("candidate_name")
-        
-        logger.info(f"✅ Using real interview data:")
-        logger.info(f"   Job: {job_title}")
-        logger.info(f"   Candidate: {candidate_name}")
-        logger.info(f"   Skills: {job_skills}")
-    else:
-        # No API data available; proceed with minimal empty context (no predefined data)
-        logger.error("❌ No interview data from API; proceeding without context")
-        company_name = "Remote.ai"
-        company_values = "Excellence and Innovation"
-        company_vision = "To connect the best talent with the best opportunities"
-        job_title = ""
-        job_objectives = ""
-        job_summary = ""
-        job_skills = []
-        candidate_name = ""
+    # Prepare instruction parameters - only use API data, no defaults
+    if not interview_data:
+        logger.error("❌ No interview data from API; cannot proceed without required data")
+        raise ValueError("Interview data is required from API.")
+    
+    # Extract only the required fields from API data
+    job_title = interview_data.get("job_title") or ""
+    job_summary = interview_data.get("job_summary") or ""
+    job_skills = interview_data.get("job_skills") or []
+    candidate_name = interview_data.get("candidate_name") or ""
+    cv_skills = interview_data.get("cv_skills") or []
+    
+    logger.info(f"✅ Using API interview data:")
+    logger.info(f"   Job: {job_title}")
+    logger.info(f"   Candidate: {candidate_name}")
+    logger.info(f"   Job Skills: {job_skills}")
+    logger.info(f"   CV Skills: {cv_skills}")
 
-    # Create agent with personalized instructions
+    # Create agent with instructions using only API data
     agent = Agent(
         instructions=get_instruction(
-            company_name=company_name,
-            company_values=company_values,
-            company_vision=company_vision,
             job_title=job_title,
-            job_objectives=job_objectives,
             job_summary=job_summary,
             job_skills=job_skills,
-            candidate_name=candidate_name
+            candidate_name=candidate_name,
+            cv_skills=cv_skills
         ),
         tools=[lookup_weather],
     )

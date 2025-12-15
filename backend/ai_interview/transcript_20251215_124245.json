@@ -1,0 +1,39 @@
+{
+  "session_history": {
+    "items": [
+      {
+        "id": "item_36aaa07933e6",
+        "type": "agent_handoff",
+        "new_agent_id": "default_agent"
+      },
+      {
+        "id": "item_74d9f5908582",
+        "type": "message",
+        "role": "assistant",
+        "content": [
+          "Hello! Welcome to your interview with Remote.ai. How are you doing today?"
+        ],
+        "interrupted": false,
+        "extra": {},
+        "metrics": {
+          "started_speaking_at": 1765795360.151467,
+          "stopped_speaking_at": 1765795364.8978949,
+          "llm_node_ttft": 1.1446788749963162,
+          "tts_node_ttfb": 1.531904499999655
+        }
+      }
+    ]
+  },
+  "real_time_transcript": {
+    "user_transcript": "",
+    "agent_transcript": "",
+    "conversation_history": []
+  },
+  "timestamp": "20251215_124245",
+  "interview_metadata": {
+    "jobid": null,
+    "appid": null,
+    "job_title": null,
+    "candidate_name": null
+  }
+}
