@@ -62,7 +62,7 @@ def download_image(url: str, filename: str) -> bool:
             f.write(resp.content)
         return True
     except Exception as e:
-        print(f"❌ Failed to download {url}: {e}")
+        print(f"Failed to download {url}: {e}")
         logger.error(f"Failed to download {url}: {e}")
         return False
 
@@ -85,16 +85,16 @@ def send_result(batch: str, user_id: str, status: str, captured_time: Any = None
             allow_redirects=True
         )
         resp.raise_for_status()
-        logger.info(f"✅ Result delivered to API for user {user_id}, batch {batch}")
+        logger.info(f"Result delivered to API for user {user_id}, batch {batch}")
         return True
     except Exception as e:
-        logger.error(f"❌ Failed to deliver result for {user_id}, batch {batch}: {e}")
+        logger.error(f"Failed to deliver result for {user_id}, batch {batch}: {e}")
         return False
 
 
 def process_queue():
     """Continuously poll Azure Queue and process messages"""
-    print(" Queue processor started...")
+    print("Queue processor started...")
 
 
     while True:
@@ -115,7 +115,7 @@ def process_queue():
 
                 print(data)
                 if len(data) == 0:
-                    print(" No records found in message, deleting...")
+                    print("No records found in message, deleting...")
                     logger.warning("No records found in message, deleting...")
                     queue_client.delete_message(msg)
                     continue
@@ -135,7 +135,7 @@ def process_queue():
                     "facedown": data[0]["facedown"]
                 }
 
-                print(f"📥 Processing image for user {user_id}, batch {batch}")
+                print(f"Processing image for user {user_id}, batch {batch}")
                 logger.info(f"Processing image for user {user_id}, batch {batch}")
                 # print("Image URL:", ["imgpath"])
                 image_paths = []
@@ -164,7 +164,7 @@ def process_queue():
                     success = download_image(record["imgpath"], filename)
                     image_paths.append(DOWNLOAD_FOLDER / filename if success else None)
                 if success:
-                    print(f"✅ Saved images in record successfully")
+                    print(f"Saved images in record successfully")
                     # Process images
                     is_match, msg = db.verify_user(user_id, image_paths[1:], threshold=0.5)
                     print(is_match, msg)
@@ -194,7 +194,7 @@ def process_queue():
 
                     queue_client.delete_message(msg)
                 else:
-                    print(f"⚠️ Failed processing {filename}, dequeue count: {msg.dequeue_count}")
+                    print(f"Failed processing {filename}, dequeue count: {msg.dequeue_count}")
 
                     if msg.dequeue_count >= MAX_RETRIES:
                         logger.warning(f"💀 Message failed {msg.dequeue_count} times, moving to dead-letter queue")
@@ -215,4 +215,4 @@ if __name__ == "__main__":
     try:
         process_queue()
     except KeyboardInterrupt:
-        print("\n🛑 Shutting down gracefully")
+        print("\n Shutting down gracefully")

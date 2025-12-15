@@ -438,7 +438,7 @@ if __name__ == "__main__":
     # Initialize storage
     try:
         storage = AzureVideoStorage()
-        # print("✅ Azure Storage client initialized\n")
+        # print("Azure Storage client initialized\n")
         
         # # Example 1: Upload a video
         # print("Example 1: Upload Video")
@@ -459,5 +459,5 @@ if __name__ == "__main__":
         # print("-" * 50)
         result = storage.download_video("https://remotingwork.blob.core.windows.net/uploads/videos/voice_assistant_user_9039dffb_20251209_120825_COMBINED.mp4?sv=2022-11-02&ss=b&srt=o&sp=rwdlactf&se=2029-06-07T20:38:13Z&st=2024-06-07T12:38:13Z&spr=https,http&sig=7zyNgPz1ZpFFlBVbnNjB%2Bj94f9ZrvJcdppaAVY9BUWs%3D")
     except Exception as e:
-        print(f"❌ Error: {e}")
+        print(f"Error: {e}")
 

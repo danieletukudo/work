@@ -340,9 +340,9 @@ if __name__ == '__main__':
     import uvicorn
     
     print("=" * 60)
-    print("🚀 LiveKit Connection API Server (FastAPI)")
+    print("LiveKit Connection API Server (FastAPI)")
     print("=" * 60)
-    print(f"📍 LIVEKIT_URL: {LIVEKIT_URL[:30]}..." if LIVEKIT_URL else "❌ LIVEKIT_URL not set")
+    print(f"📍 LIVEKIT_URL: {LIVEKIT_URL[:30]}..."if LIVEKIT_URL else "LIVEKIT_URL not set")
     print(f"🔑 API Key configured: {bool(LIVEKIT_API_KEY)}")
     print(f"🔐 API Secret configured: {bool(LIVEKIT_API_SECRET)}")
     print("=" * 60)

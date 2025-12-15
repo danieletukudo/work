@@ -1,0 +1,107 @@
+{
+  "session_history": {
+    "items": [
+      {
+        "id": "item_798b6c9aa543",
+        "type": "agent_handoff",
+        "new_agent_id": "default_agent"
+      },
+      {
+        "id": "item_cb5f81b5b111",
+        "type": "message",
+        "role": "assistant",
+        "content": [
+          "Hello, Max! Welcome to your interview! How are you doing today?"
+        ],
+        "interrupted": false,
+        "extra": {},
+        "metrics": {
+          "started_speaking_at": 1765803625.329626,
+          "stopped_speaking_at": 1765803630.02912,
+          "llm_node_ttft": 1.493188000000373,
+          "tts_node_ttfb": 1.6789495830016676
+        }
+      },
+      {
+        "id": "item_7fba70cb1f65",
+        "type": "message",
+        "role": "user",
+        "content": [
+          "I'm good."
+        ],
+        "interrupted": false,
+        "transcript_confidence": 0.98168945,
+        "extra": {},
+        "metrics": {
+          "started_speaking_at": 1765803632.286248,
+          "stopped_speaking_at": 1765803632.484319,
+          "transcription_delay": 0.7745761871337891,
+          "end_of_turn_delay": 0.774907112121582,
+          "on_user_turn_completed_delay": 9.834002412389964e-06
+        }
+      },
+      {
+        "id": "item_9ec6ae4de56a",
+        "type": "message",
+        "role": "assistant",
+        "content": [
+          "That's great to hear! Let's get started. First, I want to confirm some role-related terms. This position is full-time, and it may involve remote work or hybrid arrangements. Are these terms acceptable for you?"
+        ],
+        "interrupted": false,
+        "extra": {},
+        "metrics": {
+          "started_speaking_at": 1765803636.592303,
+          "stopped_speaking_at": 1765803650.8737762,
+          "llm_node_ttft": 1.0733511250000447,
+          "tts_node_ttfb": 2.253379000001587,
+          "e2e_latency": 4.1079840660095215
+        }
+      },
+      {
+        "id": "item_17dec608a253",
+        "type": "message",
+        "role": "user",
+        "content": [
+          "Yeah."
+        ],
+        "interrupted": false,
+        "transcript_confidence": 0.98657227,
+        "extra": {},
+        "metrics": {
+          "started_speaking_at": 1765803652.183809,
+          "stopped_speaking_at": 1765803652.985397,
+          "transcription_delay": 1.2701270580291748,
+          "end_of_turn_delay": 1.2705798149108887,
+          "on_user_turn_completed_delay": 7.041999197099358e-06
+        }
+      },
+      {
+        "id": "item_2eb911dae1ac",
+        "type": "message",
+        "role": "assistant",
+        "content": [
+          "Thank you for confirming that. Now, could you please tell me a little bit about yourself?"
+        ],
+        "interrupted": false,
+        "extra": {},
+        "metrics": {
+          "started_speaking_at": 1765803657.2887292,
+          "stopped_speaking_at": 1765803662.6412108,
+          "llm_node_ttft": 1.445318917001714,
+          "tts_node_ttfb": 1.5720815419990686,
+          "e2e_latency": 4.303332090377808
+        }
+      }
+    ]
+  },
+  "real_time_transcript": {
+    "user_transcript": "",
+    "agent_transcript": "",
+    "conversation_history": []
+  },
+  "timestamp": "20251215_150148",
+  "interview_metadata": {
+    "job_title": "Customer Service Representative",
+    "candidate_name": "Max Well"
+  }
+}

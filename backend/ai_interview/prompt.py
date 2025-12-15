@@ -182,14 +182,14 @@ def get_instruction(job_title: str, job_summary: str, job_skills: list,
    # Format job skills list as bullets
    job_skills_section = ""
    if job_skills:
-       job_skills_section = "\n".join([f"- {skill}" for skill in job_skills])
+       job_skills_section = "\n".join([f"- {skill}"for skill in job_skills])
    else:
        job_skills_section = "- Not specified"
 
    # Format CV skills list as bullets (optional)
    cv_skills_section = ""
    if cv_skills:
-       cv_skills_section = "\n".join([f"- {skill}" for skill in cv_skills])
+       cv_skills_section = "\n".join([f"- {skill}"for skill in cv_skills])
    else:
        cv_skills_section = "- Not provided"
 
@@ -233,7 +233,7 @@ def get_instruction(job_title: str, job_summary: str, job_skills: list,
 
    ---
 
-   ### 💬 RESPONSE HANDLING
+   ###  RESPONSE HANDLING
    - After each answer:
    - Provide a short, positive **comment** (e.g., "That's a thoughtful perspective.").
    - Then ask a relevant **follow-up question** (max depth = 2).
@@ -244,7 +244,7 @@ def get_instruction(job_title: str, job_summary: str, job_skills: list,
 
    ---
 
-   ### 🧠 DECISION LOGIC
+   ###  DECISION LOGIC
    - You don't have to cover every category.
    - Use judgment to prioritize based on:
    - Job level and relevance
@@ -254,7 +254,7 @@ def get_instruction(job_title: str, job_summary: str, job_skills: list,
 
    ---
 
-   ### 🏁 CLOSING STATEMENT
+   ###  CLOSING STATEMENT
    When finished, thank the candidate for their time and say something like:
    when you are done say any of this "  "that concludes our interview",
         "concludes our interview",
@@ -336,14 +336,14 @@ You are an expert hiring manager and talent evaluator. Your PRIMARY task is to e
 
 ---
 
-### 📋 JOB DESCRIPTION
+###  JOB DESCRIPTION
 {job_formatted}
 
 *Use this to understand what skills/experience are required and assess if interview answers demonstrate these requirements.*
 
 ---
 
-### 👤 CANDIDATE INFORMATION
+###  CANDIDATE INFORMATION
 - **Name:** {candidate_name}
 - **Candidate ID:** {candidate_id}
 - **Email:** {candidate_email}
@@ -358,14 +358,14 @@ You are an expert hiring manager and talent evaluator. Your PRIMARY task is to e
 
 ---
 
-### 💬 INTERVIEW TRANSCRIPT
+###  INTERVIEW TRANSCRIPT
 {transcript_formatted}
 
 **THIS IS YOUR PRIMARY SOURCE FOR EVALUATION** - Evaluate based on how the candidate answered these questions.
 
 ---
 
-### 📊 EVALUATION REQUIREMENTS
+###  EVALUATION REQUIREMENTS
 
 Provide a comprehensive evaluation in the following JSON format:
 
@@ -430,7 +430,7 @@ Provide a comprehensive evaluation in the following JSON format:
     }}
 }}
 
-### 📝 EVALUATION GUIDELINES
+###  EVALUATION GUIDELINES
 
 **PRIMARY EVALUATION CRITERIA (Based on Interview Responses):**
 
@@ -493,7 +493,7 @@ Provide a comprehensive evaluation in the following JSON format:
 - **Maybe:** Decent interview but concerns OR good interview but CV inconsistencies
 - **No:** Poor interview performance OR lies detected in CV verification
 
-### ⚠️ CRITICAL EVALUATION RULES
+###  CRITICAL EVALUATION RULES
 
 1. **PRIMARY BASIS:** Interview transcript responses determine the score
 2. **VERIFICATION TOOL:** CV is used to verify truthfulness, not to score

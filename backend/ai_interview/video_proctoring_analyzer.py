@@ -145,7 +145,7 @@ def determine_gaze_direction(landmarks, img_w, img_h):
     else:
         vertical = "CENTER"
     
-    if horizontal == "CENTER" and vertical == "CENTER":
+    if horizontal == "CENTER"and vertical == "CENTER":
         direction = "CENTER"
     elif horizontal == "CENTER":
         direction = vertical
@@ -191,14 +191,14 @@ class GazeTracker:
             if self.direction_start_time is not None and self.current_direction is not None:
                 duration = current_time - self.direction_start_time
                 
-                if self.current_direction == "LEFT" or "LEFT" in self.current_direction:
+                if self.current_direction == "LEFT"or "LEFT"in self.current_direction:
                     self.left_duration += duration
                     self.left_events.append({
                         'timestamp': self.direction_start_time - self.start_time,
                         'duration': duration,
                         'movement_type': self.current_movement_type
                     })
-                elif self.current_direction == "RIGHT" or "RIGHT" in self.current_direction:
+                elif self.current_direction == "RIGHT"or "RIGHT"in self.current_direction:
                     self.right_duration += duration
                     self.right_events.append({
                         'timestamp': self.direction_start_time - self.start_time,
@@ -217,14 +217,14 @@ class GazeTracker:
         if self.direction_start_time is not None and self.current_direction is not None:
             duration = current_time - self.direction_start_time
             
-            if self.current_direction == "LEFT" or "LEFT" in self.current_direction:
+            if self.current_direction == "LEFT"or "LEFT"in self.current_direction:
                 self.left_duration += duration
                 self.left_events.append({
                     'timestamp': self.direction_start_time - self.start_time,
                     'duration': duration,
                     'movement_type': self.current_movement_type
                 })
-            elif self.current_direction == "RIGHT" or "RIGHT" in self.current_direction:
+            elif self.current_direction == "RIGHT"or "RIGHT"in self.current_direction:
                 self.right_duration += duration
                 self.right_events.append({
                     'timestamp': self.direction_start_time - self.start_time,
@@ -242,30 +242,30 @@ class GazeTracker:
         lines.append("=" * 80)
         lines.append(f"Total tracking time: {total_time:.2f} seconds ({total_time/60:.2f} minutes)")
         lines.append(f"\nLEFT GAZE:")
-        lines.append(f"  Total duration: {self.left_duration:.2f} seconds ({self.left_duration/60:.2f} minutes)")
-        lines.append(f"  Percentage of time: {(self.left_duration/total_time*100) if total_time > 0 else 0:.2f}%")
-        lines.append(f"  Number of events: {len(self.left_events)}")
+        lines.append(f"Total duration: {self.left_duration:.2f} seconds ({self.left_duration/60:.2f} minutes)")
+        lines.append(f"Percentage of time: {(self.left_duration/total_time*100) if total_time > 0 else 0:.2f}%")
+        lines.append(f"Number of events: {len(self.left_events)}")
         
         if self.left_events:
-            lines.append(f"  Events with timestamps:")
+            lines.append(f"Events with timestamps:")
             for i, event in enumerate(self.left_events[:10], 1):  # Limit to first 10
                 timestamp_str = f"{event['timestamp']:.2f}s"
                 duration_str = f"{event['duration']:.2f}s"
-                lines.append(f"    Event {i}: Time {timestamp_str}, Duration {duration_str}, Type: {event['movement_type']}")
+                lines.append(f"Event {i}: Time {timestamp_str}, Duration {duration_str}, Type: {event['movement_type']}")
             if len(self.left_events) > 10:
                 lines.append(f"    ... and {len(self.left_events) - 10} more events")
         
         lines.append(f"\nRIGHT GAZE:")
-        lines.append(f"  Total duration: {self.right_duration:.2f} seconds ({self.right_duration/60:.2f} minutes)")
-        lines.append(f"  Percentage of time: {(self.right_duration/total_time*100) if total_time > 0 else 0:.2f}%")
-        lines.append(f"  Number of events: {len(self.right_events)}")
+        lines.append(f"Total duration: {self.right_duration:.2f} seconds ({self.right_duration/60:.2f} minutes)")
+        lines.append(f"Percentage of time: {(self.right_duration/total_time*100) if total_time > 0 else 0:.2f}%")
+        lines.append(f"Number of events: {len(self.right_events)}")
         
         if self.right_events:
-            lines.append(f"  Events with timestamps:")
+            lines.append(f"Events with timestamps:")
             for i, event in enumerate(self.right_events[:10], 1):
                 timestamp_str = f"{event['timestamp']:.2f}s"
                 duration_str = f"{event['duration']:.2f}s"
-                lines.append(f"    Event {i}: Time {timestamp_str}, Duration {duration_str}, Type: {event['movement_type']}")
+                lines.append(f"Event {i}: Time {timestamp_str}, Duration {duration_str}, Type: {event['movement_type']}")
             if len(self.right_events) > 10:
                 lines.append(f"    ... and {len(self.right_events) - 10} more events")
         
@@ -275,8 +275,8 @@ class GazeTracker:
         right_eye_count = sum(1 for e in self.right_events if e['movement_type'] == 'EYE')
         
         lines.append(f"\nMOVEMENT TYPE BREAKDOWN:")
-        lines.append(f"  LEFT - Head turns: {left_head_count}, Eye movements: {left_eye_count}")
-        lines.append(f"  RIGHT - Head turns: {right_head_count}, Eye movements: {right_eye_count}")
+        lines.append(f"LEFT - Head turns: {left_head_count}, Eye movements: {left_eye_count}")
+        lines.append(f"RIGHT - Head turns: {right_head_count}, Eye movements: {right_eye_count}")
         lines.append("=" * 80)
         
         return "\n".join(lines)
@@ -336,17 +336,17 @@ class MultipleFaceTracker:
         lines.append("=" * 80)
         lines.append(f"Total tracking time: {total_time:.2f} seconds ({total_time/60:.2f} minutes)")
         lines.append(f"\nMULTIPLE FACES DETECTED:")
-        lines.append(f"  Total duration: {self.total_multiple_face_duration:.2f} seconds ({self.total_multiple_face_duration/60:.2f} minutes)")
-        lines.append(f"  Percentage of time: {(self.total_multiple_face_duration/total_time*100) if total_time > 0 else 0:.2f}%")
-        lines.append(f"  Number of periods: {len(self.multiple_face_events)}")
+        lines.append(f"Total duration: {self.total_multiple_face_duration:.2f} seconds ({self.total_multiple_face_duration/60:.2f} minutes)")
+        lines.append(f"Percentage of time: {(self.total_multiple_face_duration/total_time*100) if total_time > 0 else 0:.2f}%")
+        lines.append(f"Number of periods: {len(self.multiple_face_events)}")
         
         if self.multiple_face_events:
-            lines.append(f"  Periods with timestamps:")
+            lines.append(f"Periods with timestamps:")
             for i, event in enumerate(self.multiple_face_events[:10], 1):
                 timestamp_str = f"{event['timestamp']:.2f}s"
                 duration_str = f"{event['duration']:.2f}s"
                 num_faces = event.get('num_faces', 0)
-                lines.append(f"    Period {i}: Time {timestamp_str}, Duration {duration_str}, Faces: {num_faces}")
+                lines.append(f"Period {i}: Time {timestamp_str}, Duration {duration_str}, Faces: {num_faces}")
             if len(self.multiple_face_events) > 10:
                 lines.append(f"    ... and {len(self.multiple_face_events) - 10} more periods")
         
@@ -494,18 +494,18 @@ def analyze_video_proctoring(video_path: str, output_txt_path: str = None) -> di
         # Warnings
         warnings = []
         if gaze_tracker.left_duration + gaze_tracker.right_duration > duration * 0.2:
-            warnings.append("⚠️  High amount of looking away detected (>20% of time)")
+            warnings.append("High amount of looking away detected (>20% of time)")
         if len(multiple_face_tracker.multiple_face_events) > 0:
-            warnings.append(f"⚠️  Multiple faces detected {len(multiple_face_tracker.multiple_face_events)} times")
+            warnings.append(f"Multiple faces detected {len(multiple_face_tracker.multiple_face_events)} times")
         if len(gaze_tracker.left_events) + len(gaze_tracker.right_events) > 50:
-            warnings.append("⚠️  High frequency of gaze changes detected")
+            warnings.append("High frequency of gaze changes detected")
         
         if warnings:
             report_lines.append("WARNINGS:")
             for warning in warnings:
                 report_lines.append(f"  {warning}")
         else:
-            report_lines.append("✅ No major violations detected")
+            report_lines.append("No major violations detected")
         
         report_lines.append("=" * 80)
         report_lines.append(f"Analysis completed at: {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}")
@@ -562,9 +562,9 @@ if __name__ == "__main__":
         
         if result['success']:
             print("\n" + result['report_text'])
-            print(f"\n✅ Report saved to: {output_path}")
+            print(f"\n Report saved to: {output_path}")
         else:
-            print(f"\n❌ Error: {result['error']}")
+            print(f"\n Error: {result['error']}")
     else:
         print("Usage: python video_proctoring_analyzer.py <video_file.mp4>")
 

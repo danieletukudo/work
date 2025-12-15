@@ -74,7 +74,7 @@
 #     with open(absolute_path, 'w') as f:
 #         json.dump(full_transcript, f, indent=2)
     
-#     logger.info(f"✅ Transcript saved: {absolute_path}")
+#     logger.info(f"Transcript saved: {absolute_path}")
 #     return absolute_path
 
 
@@ -110,12 +110,12 @@
 #         if file_path and os.path.exists(file_path):
 #             try:
 #                 os.remove(file_path)
-#                 logger.info(f"🗑️  Deleted: {file_path}")
+#                 logger.info(f"Deleted: {file_path}")
 #             except Exception as e:
-#                 logger.error(f"❌ Failed to delete {file_path}: {e}")
+#                 logger.error(f"Failed to delete {file_path}: {e}")
 #                 all_deleted = False
 #         elif file_path:
-#             logger.warning(f"⚠️  File not found: {file_path}")
+#             logger.warning(f"File not found: {file_path}")
     
 #     return all_deleted
 
@@ -157,8 +157,8 @@
   
 #     async def shutdown_callback():
 #         """Cleanup on shutdown - exit immediately, daemon threads handle rest"""
-#         logger.info("🛑 Agent session ending - uploads continue in background")
-#         logger.info("✅ Agent session ended - process will exit now")
+#         logger.info("Agent session ending - uploads continue in background")
+#         logger.info("Agent session ended - process will exit now")
 
 #     ctx.add_shutdown_callback(shutdown_callback)
 #     await ctx.connect()
@@ -204,59 +204,59 @@
 #         # Prevent duplicate uploads
 #         if participant_identity in participant_upload_in_progress:
 #             if participant_upload_in_progress[participant_identity]:
-#                 logger.info(f"⚠️ Upload already in progress for {participant_identity}, skipping...")
+#                 logger.info(f"Upload already in progress for {participant_identity}, skipping...")
 #                 return
         
 #         participant_upload_in_progress[participant_identity] = True
         
 #         try:
-#             logger.info(f"🚀 Starting upload and cleanup workflow for {participant_identity}")
+#             logger.info(f"Starting upload and cleanup workflow for {participant_identity}")
             
 #             # Step 1: Upload combined video to Azure
-#             logger.info(f"📤 Uploading combined video to Azure...")
+#             logger.info(f"Uploading combined video to Azure...")
 #             video_upload_result = upload_video_to_azure(combined_video_path)
             
 #             if not video_upload_result.get('success'):
-#                 logger.error(f"❌ Failed to upload video: {video_upload_result.get('error')}")
+#                 logger.error(f"Failed to upload video: {video_upload_result.get('error')}")
 #                 return
             
 #             video_url = video_upload_result['blob_url']
-#             logger.info(f"✅ Video uploaded successfully: {video_url}")
+#             logger.info(f"Video uploaded successfully: {video_url}")
             
 #             # Step 2: Upload transcript to Azure
-#             logger.info(f"📤 Uploading transcript to Azure...")
+#             logger.info(f"Uploading transcript to Azure...")
 #             transcript_upload_result = upload_transcript_to_azure(transcript_path)
             
 #             if not transcript_upload_result.get('success'):
-#                 logger.error(f"❌ Failed to upload transcript: {transcript_upload_result.get('error')}")
+#                 logger.error(f"Failed to upload transcript: {transcript_upload_result.get('error')}")
 #                 return
             
 #             transcript_url = transcript_upload_result['blob_url']
-#             logger.info(f"✅ Transcript uploaded successfully: {transcript_url}")
+#             logger.info(f"Transcript uploaded successfully: {transcript_url}")
             
 #             # Step 3: Save Azure links to file
-#             logger.info(f"💾 Saving Azure links...")
+#             logger.info(f"Saving Azure links...")
 #             links_filename = None
 #             try:
 #                 links_result = save_azure_links(participant_identity, video_url, transcript_url, auto_evaluate=False)
 #                 if links_result and isinstance(links_result, dict) and links_result.get('links_file'):
 #                     links_filename = links_result.get('links_file')
-#                     logger.info(f"✅ Links saved successfully: {links_filename}")
+#                     logger.info(f"Links saved successfully: {links_filename}")
 #                 else:
-#                     logger.warning(f"⚠️ Links result format unexpected: {links_result}")
+#                     logger.warning(f"Links result format unexpected: {links_result}")
 #                     # Fallback: construct filename manually
 #                     links_filename = f"azure_links/{participant_identity}_{datetime.now().strftime('%Y%m%d_%H%M%S')}_links.json"
-#                     logger.info(f"✅ Using fallback links filename: {links_filename}")
+#                     logger.info(f"Using fallback links filename: {links_filename}")
 #             except Exception as e:
-#                 logger.error(f"❌ Error saving links: {e}")
+#                 logger.error(f"Error saving links: {e}")
 #                 import traceback
 #                 traceback.print_exc()
 #                 # Still try to construct filename for evaluation
 #                 links_filename = f"azure_links/{participant_identity}_{datetime.now().strftime('%Y%m%d_%H%M%S')}_links.json"
-#                 logger.info(f"⚠️ Using fallback links filename after error: {links_filename}")
+#                 logger.info(f"Using fallback links filename after error: {links_filename}")
             
 #             # Step 3.5: Evaluation happens in disconnect handler, skip duplicate evaluation here
-#             logger.info(f"ℹ️ Evaluation will run automatically in disconnect handler")
+#             logger.info(f"Evaluation will run automatically in disconnect handler")
             
 #             # Step 4: Get original video and audio paths for cleanup
 #             original_video_path = None
@@ -275,14 +275,14 @@
 #             )
             
 #             if cleanup_success:
-#                 logger.info(f"✅ All local files cleaned up successfully!")
+#                 logger.info(f"All local files cleaned up successfully!")
 #             else:
-#                 logger.warning(f"⚠️  Some files could not be deleted")
+#                 logger.warning(f"Some files could not be deleted")
             
-#             logger.info(f"🎉 Upload and cleanup workflow completed for {participant_identity}")
+#             logger.info(f"Upload and cleanup workflow completed for {participant_identity}")
             
 #         except Exception as e:
-#             logger.error(f"❌ Error in upload and cleanup workflow: {e}")
+#             logger.error(f"Error in upload and cleanup workflow: {e}")
 #             import traceback
 #             traceback.print_exc()
 #         finally:
@@ -292,7 +292,7 @@
 #     async def combine_video_audio(participant_identity: str):
 #         """Combine video and audio files into a single MP4 with perfect sync"""
 #         if participant_identity not in participant_recording_files:
-#             logger.warning(f"⚠️ No recording files found for {participant_identity}")
+#             logger.warning(f"No recording files found for {participant_identity}")
 #             return
         
 #         files = participant_recording_files[participant_identity]
@@ -300,16 +300,16 @@
 #         audio_file = files.get('audio')
         
 #         if not video_file or not audio_file:
-#             logger.warning(f"⚠️ Missing video or audio file for {participant_identity}")
-#             logger.info(f"   Video: {video_file}")
-#             logger.info(f"   Audio: {audio_file}")
+#             logger.warning(f"Missing video or audio file for {participant_identity}")
+#             logger.info(f"Video: {video_file}")
+#             logger.info(f"Audio: {audio_file}")
 #             return
         
 #         # Check if both files exist
 #         if not os.path.exists(video_file) or not os.path.exists(audio_file):
-#             logger.error(f"❌ Files not found:")
-#             logger.error(f"   Video: {os.path.exists(video_file)} - {video_file}")
-#             logger.error(f"   Audio: {os.path.exists(audio_file)} - {audio_file}")
+#             logger.error(f"Files not found:")
+#             logger.error(f"Video: {os.path.exists(video_file)} - {video_file}")
+#             logger.error(f"Audio: {os.path.exists(audio_file)} - {audio_file}")
 #             return
         
 #         # Create combined filename
@@ -317,10 +317,10 @@
 #         timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
 #         combined_file = f"recordings/combined/{participant_identity}_{timestamp}_COMBINED.mp4"
         
-#         logger.info(f"🎬 Combining video and audio...")
-#         logger.info(f"   Video: {video_file}")
-#         logger.info(f"   Audio: {audio_file}")
-#         logger.info(f"   Output: {combined_file}")
+#         logger.info(f"Combining video and audio...")
+#         logger.info(f"Video: {video_file}")
+#         logger.info(f"Audio: {audio_file}")
+#         logger.info(f"Output: {combined_file}")
         
 #         try:
 #             # Use ffmpeg to combine video and audio
@@ -348,26 +348,26 @@
 #             )
             
 #             if result.returncode == 0:
-#                 logger.info(f"✅ Successfully combined video and audio!")
-#                 logger.info(f"📁 Combined file: {combined_file}")
+#                 logger.info(f"Successfully combined video and audio!")
+#                 logger.info(f"Combined file: {combined_file}")
                 
 #                 # Check file size
 #                 size_mb = os.path.getsize(combined_file) / (1024 * 1024)
-#                 logger.info(f"📊 File size: {size_mb:.2f} MB")
+#                 logger.info(f"File size: {size_mb:.2f} MB")
                 
 #                 # Track combined file for this participant
 #                 if participant_identity not in participant_recording_files:
 #                     participant_recording_files[participant_identity] = {}
 #                 participant_recording_files[participant_identity]['combined'] = combined_file
-#                 logger.info(f"✅ Video tracked and ready for upload (will be uploaded by disconnect handler)")
+#                 logger.info(f"Video tracked and ready for upload (will be uploaded by disconnect handler)")
 #             else:
-#                 logger.error(f"❌ ffmpeg error:")
-#                 logger.error(f"   {result.stderr}")
+#                 logger.error(f"ffmpeg error:")
+#                 logger.error(f"{result.stderr}")
                 
 #         except FileNotFoundError:
-#             logger.error(f"❌ ffmpeg not found! Install with: brew install ffmpeg")
+#             logger.error(f"ffmpeg not found! Install with: brew install ffmpeg")
 #         except Exception as e:
-#             logger.error(f"❌ Error combining files: {e}")
+#             logger.error(f"Error combining files: {e}")
 #             import traceback
 #             traceback.print_exc()
     
@@ -384,8 +384,8 @@
 #         valid_frame_count = 0
         
 #         try:
-#             logger.info(f"🎥 Starting VIDEO recording for {participant_identity}")
-#             logger.info(f"🎥 Mode: TIMESTAMP TRACKING (for perfect audio sync)")
+#             logger.info(f"Starting VIDEO recording for {participant_identity}")
+#             logger.info(f"Mode: TIMESTAMP TRACKING (for perfect audio sync)")
             
 #             # STEP 1: Collect ALL frames with timestamps
 #             async for event in video_stream:
@@ -397,7 +397,7 @@
 #                     # Use SHARED start time for this participant
 #                     if participant_identity not in participant_recording_times:
 #                         participant_recording_times[participant_identity] = {'start': current_time, 'end': None}
-#                         logger.info(f"🎬 Recording START time set: {current_time}")
+#                         logger.info(f"Recording START time set: {current_time}")
                     
 #                     if start_time is None:
 #                         start_time = participant_recording_times[participant_identity]['start']
@@ -409,14 +409,14 @@
                     
 #                     # Skip frames with invalid dimensions (corrupted frames)
 #                     if frame_width < 100 or frame_height < 100:
-#                         logger.debug(f"⚠️ Skipping corrupted frame {frame_count}: {frame_width}x{frame_height}")
+#                         logger.debug(f"Skipping corrupted frame {frame_count}: {frame_width}x{frame_height}")
 #                         continue
                     
 #                     # Capture width/height from FIRST valid frame only
 #                     if width is None:
 #                         width = frame_width
 #                         height = frame_height
-#                         logger.info(f"🎥 Detected resolution: {width}x{height}")
+#                         logger.info(f"Detected resolution: {width}x{height}")
                     
 #                     # Resize frames to match target resolution instead of skipping
 #                     buffer = frame_rgba.data
@@ -424,7 +424,7 @@
                     
 #                     # Resize if resolution changed
 #                     if frame_width != width or frame_height != height:
-#                         logger.debug(f"🔄 Resizing frame {frame_count} from {frame_width}x{frame_height} to {width}x{height}")
+#                         logger.debug(f"Resizing frame {frame_count} from {frame_width}x{frame_height} to {width}x{height}")
 #                         img_rgba = cv2.resize(img_rgba, (width, height), interpolation=cv2.INTER_LINEAR)
                     
 #                     img_array = cv2.cvtColor(img_rgba, cv2.COLOR_RGBA2BGR)
@@ -436,17 +436,17 @@
 #                     # Log progress every 30 frames
 #                     if valid_frame_count % 30 == 0:
 #                         elapsed = (current_time - start_time).total_seconds()
-#                         logger.info(f"🎥 Recorded {valid_frame_count} valid frames ({elapsed:.1f}s)")
+#                         logger.info(f"Recorded {valid_frame_count} valid frames ({elapsed:.1f}s)")
                 
 #                 except Exception as frame_error:
-#                     logger.error(f"❌ Error processing frame {frame_count}: {frame_error}")
+#                     logger.error(f"Error processing frame {frame_count}: {frame_error}")
 #                     continue
                     
 #         except asyncio.CancelledError:
-#             logger.info(f"🛑 Video recording cancelled (participant disconnected)")
+#             logger.info(f"Video recording cancelled (participant disconnected)")
 #             # Use SHARED end time set by disconnect handler
 #         except Exception as e:
-#             logger.error(f"❌ Video stream error: {e}")
+#             logger.error(f"Video stream error: {e}")
 #             import traceback
 #             traceback.print_exc()
 #         finally:
@@ -461,7 +461,7 @@
 #             # Update SHARED end time
 #             if participant_identity in participant_recording_times:
 #                 participant_recording_times[participant_identity]['end'] = end_time
-#                 logger.info(f"🎬 Video recording END time set: {end_time}")
+#                 logger.info(f"Video recording END time set: {end_time}")
             
 #             # STEP 2: Create video with EXACT duration matching audio (fill gaps with duplicate frames)
 #             if start_time and end_time and len(frames_with_timestamps) > 0 and width and height:
@@ -475,19 +475,19 @@
 #                 total_duration = (end_time - start_time).total_seconds()
 #                 target_fps = 30.0  # Target FPS for smooth video
                 
-#                 logger.info(f"✅ Frame collection complete!")
-#                 logger.info(f"✅ Valid frames collected: {len(frames_with_timestamps)}")
-#                 logger.info(f"✅ Total recording duration: {total_duration:.1f} seconds")
-#                 logger.info(f"📐 Video resolution: {width}x{height}")
+#                 logger.info(f"Frame collection complete!")
+#                 logger.info(f"Valid frames collected: {len(frames_with_timestamps)}")
+#                 logger.info(f"Total recording duration: {total_duration:.1f} seconds")
+#                 logger.info(f"Video resolution: {width}x{height}")
                 
 #                 # Validate resolution
 #                 if width < 100 or height < 100:
-#                     logger.error(f"❌ Invalid resolution: {width}x{height}")
+#                     logger.error(f"Invalid resolution: {width}x{height}")
 #                     return
                 
 #                 # STEP 3: Generate frames at regular intervals (30 FPS) to match audio duration
 #                 target_frame_count = int(total_duration * target_fps)
-#                 logger.info(f"🎯 Target frames for {total_duration:.1f}s @ {target_fps} FPS: {target_frame_count}")
+#                 logger.info(f"Target frames for {total_duration:.1f}s @ {target_fps} FPS: {target_frame_count}")
                 
 #                 output_frames = []
 #                 frame_idx = 0
@@ -510,7 +510,7 @@
 #                     # Use the closest frame
 #                     output_frames.append(frames_with_timestamps[frame_idx][1])
                 
-#                 logger.info(f"✅ Generated {len(output_frames)} frames (filled gaps for continuous playback)")
+#                 logger.info(f"Generated {len(output_frames)} frames (filled gaps for continuous playback)")
                 
 #                 # STEP 4: Write ALL frames to video
 #                 os.makedirs("recordings/video", exist_ok=True)
@@ -522,43 +522,43 @@
 #                 video_writer = cv2.VideoWriter(video_filename, fourcc, target_fps, (width, height))
                 
 #                 if not video_writer.isOpened():
-#                     logger.error(f"❌ Failed to open video writer!")
+#                     logger.error(f"Failed to open video writer!")
 #                     return
                 
-#                 logger.info(f"🎥 Writing {len(output_frames)} frames to: {video_filename}")
-#                 logger.info(f"🎥 Settings: {width}x{height} @ {target_fps} FPS")
+#                 logger.info(f"Writing {len(output_frames)} frames to: {video_filename}")
+#                 logger.info(f"Settings: {width}x{height} @ {target_fps} FPS")
                 
 #                 # Write ALL frames
 #                 for i, frame in enumerate(output_frames):
 #                     video_writer.write(frame)
 #                     if (i + 1) % 100 == 0 or (i + 1) == len(output_frames):
-#                         logger.info(f"🎥 Written {i + 1}/{len(output_frames)} frames...")
+#                         logger.info(f"Written {i + 1}/{len(output_frames)} frames...")
                 
 #                 video_writer.release()
-#                 logger.info(f"✅ Video writer released")
+#                 logger.info(f"Video writer released")
                 
-#                 logger.info(f"🎉 Video saved successfully!")
-#                 logger.info(f"📁 File: {video_filename}")
-#                 logger.info(f"📊 Actual frames captured: {len(frames_with_timestamps)}")
-#                 logger.info(f"📊 Output frames (with gap filling): {len(output_frames)}")
-#                 logger.info(f"⏱️  Video duration: {total_duration:.1f} seconds")
-#                 logger.info(f"🎬 FPS: {target_fps}")
-#                 logger.info(f"🔄 Gap filling: {len(output_frames) - len(frames_with_timestamps)} duplicate frames")
-#                 logger.info(f"📺 Video duration will MATCH audio duration perfectly!")
+#                 logger.info(f"Video saved successfully!")
+#                 logger.info(f"File: {video_filename}")
+#                 logger.info(f"Actual frames captured: {len(frames_with_timestamps)}")
+#                 logger.info(f"Output frames (with gap filling): {len(output_frames)}")
+#                 logger.info(f"Video duration: {total_duration:.1f} seconds")
+#                 logger.info(f"FPS: {target_fps}")
+#                 logger.info(f"Gap filling: {len(output_frames) - len(frames_with_timestamps)} duplicate frames")
+#                 logger.info(f"Video duration will MATCH audio duration perfectly!")
                 
 #                 # Track video filename for combining later
 #                 if participant_identity not in participant_recording_files:
 #                     participant_recording_files[participant_identity] = {}
 #                 participant_recording_files[participant_identity]['video'] = video_filename
-#                 logger.info(f"✅ Video filename tracked for combining")
+#                 logger.info(f"Video filename tracked for combining")
                 
 #                 # Check if audio is also done - if yes, combine them!
 #                 if 'audio' in participant_recording_files.get(participant_identity, {}):
-#                     logger.info(f"🎬 Both video and audio ready - combining now!")
+#                     logger.info(f"Both video and audio ready - combining now!")
 #                     task = asyncio.create_task(combine_video_audio(participant_identity))
 #                     background_tasks.append(task)
 #             else:
-#                 logger.warning(f"⚠️ No valid frames were recorded!")
+#                 logger.warning(f"No valid frames were recorded!")
     
 #     # Record audio with SHARED TIMESTAMPS for perfect video sync
 #     async def handle_audio_recording(audio_track: rtc.Track, participant_identity: str):
@@ -572,7 +572,7 @@
 #         start_time = None
         
 #         try:
-#             logger.info(f"🎤 Starting AUDIO recording for {participant_identity}")
+#             logger.info(f"Starting AUDIO recording for {participant_identity}")
             
 #             async for event in audio_stream:
 #                 current_time = datetime.now()
@@ -582,7 +582,7 @@
 #                 # Use SHARED start time for this participant
 #                 if participant_identity not in participant_recording_times:
 #                     participant_recording_times[participant_identity] = {'start': current_time, 'end': None}
-#                     logger.info(f"🎬 Recording START time set: {current_time}")
+#                     logger.info(f"Recording START time set: {current_time}")
                 
 #                 if start_time is None:
 #                     start_time = participant_recording_times[participant_identity]['start']
@@ -596,8 +596,8 @@
 #                     timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
 #                     audio_filename = f"recordings/audio/{participant_identity}_{timestamp}_AUDIO.wav"
                     
-#                     logger.info(f"🎤 Recording to: {audio_filename}")
-#                     logger.info(f"🎤 Sample rate: {sample_rate}Hz, Channels: {num_channels}")
+#                     logger.info(f"Recording to: {audio_filename}")
+#                     logger.info(f"Sample rate: {sample_rate}Hz, Channels: {num_channels}")
                 
 #                 # Store audio data (no processing, keep quality)
 #                 audio_data = np.frombuffer(audio_frame.data, dtype=np.int16)
@@ -605,13 +605,13 @@
                 
 #                 # Log progress
 #                 if audio_frame_count % 100 == 0:
-#                     logger.info(f"🎤 Audio: {audio_frame_count} frames")
+#                     logger.info(f"Audio: {audio_frame_count} frames")
                     
 #         except asyncio.CancelledError:
-#             logger.info(f"🛑 Audio recording cancelled (participant disconnected)")
+#             logger.info(f"Audio recording cancelled (participant disconnected)")
 #             # Use SHARED end time set by disconnect handler
 #         except Exception as e:
-#             logger.error(f"❌ Audio error: {e}")
+#             logger.error(f"Audio error: {e}")
 #             import traceback
 #             traceback.print_exc()
 #         finally:
@@ -629,7 +629,7 @@
 #                 current_end = participant_recording_times[participant_identity]['end']
 #                 if current_end is None or end_time > current_end:
 #                     participant_recording_times[participant_identity]['end'] = end_time
-#                 logger.info(f"🎬 Audio recording END time set: {end_time}")
+#                 logger.info(f"Audio recording END time set: {end_time}")
             
 #             # Save audio to WAV (lossless)
 #             if audio_frames and sample_rate:
@@ -646,23 +646,23 @@
 #                         shared_end = participant_recording_times[participant_identity]['end']
 #                         if shared_start and shared_end:
 #                             duration = (shared_end - shared_start).total_seconds()
-#                             logger.info(f"✅ Audio saved: {audio_filename} ({audio_frame_count} frames)")
-#                             logger.info(f"🎬 Audio uses SHARED timeline: {duration:.1f} seconds")
+#                             logger.info(f"Audio saved: {audio_filename} ({audio_frame_count} frames)")
+#                             logger.info(f"Audio uses SHARED timeline: {duration:.1f} seconds")
                     
 #                     # Track audio filename for combining later
 #                     if participant_identity not in participant_recording_files:
 #                         participant_recording_files[participant_identity] = {}
 #                     participant_recording_files[participant_identity]['audio'] = audio_filename
-#                     logger.info(f"✅ Audio filename tracked for combining")
+#                     logger.info(f"Audio filename tracked for combining")
                     
 #                     # Check if video is also done - if yes, combine them!
 #                     if 'video' in participant_recording_files.get(participant_identity, {}):
-#                         logger.info(f"🎬 Both video and audio ready - combining now!")
+#                         logger.info(f"Both video and audio ready - combining now!")
 #                         task = asyncio.create_task(combine_video_audio(participant_identity))
 #                         background_tasks.append(task)
                     
 #                 except Exception as e:
-#                     logger.error(f"❌ Error saving audio: {e}")
+#                     logger.error(f"Error saving audio: {e}")
 #                     import traceback
 #                     traceback.print_exc()
 
@@ -671,18 +671,18 @@
 #     def on_participant_disconnected(participant: rtc.RemoteParticipant):
 #         """Handle participant disconnect - IMMEDIATELY stop both video and audio"""
 #         disconnect_time = datetime.now()
-#         logger.info(f"🔴 Participant disconnected: {participant.identity}")
+#         logger.info(f"Participant disconnected: {participant.identity}")
         
 #         # Set SHARED end time IMMEDIATELY
 #         if participant.identity in participant_recording_times:
 #             participant_recording_times[participant.identity]['end'] = disconnect_time
-#             logger.info(f"🎬 SHARED END time locked: {disconnect_time}")
+#             logger.info(f"SHARED END time locked: {disconnect_time}")
             
 #             # Calculate final duration
 #             start = participant_recording_times[participant.identity]['start']
 #             duration = (disconnect_time - start).total_seconds()
-#             logger.info(f"📊 Final recording duration: {duration:.1f} seconds")
-#             logger.info(f"🎬 Both video and audio will use this EXACT timeline")
+#             logger.info(f"Final recording duration: {duration:.1f} seconds")
+#             logger.info(f"Both video and audio will use this EXACT timeline")
         
 #         # Cancel recording tasks to stop immediately (not wait for streams)
 #         if participant.identity in participant_recording_tasks:
@@ -690,19 +690,19 @@
 #             for task_name, task in tasks.items():
 #                 if task and not task.done():
 #                     task.cancel()
-#                     logger.info(f"🛑 Cancelled {task_name} recording task")
-#             logger.info(f"✅ Both recordings stopped at SAME TIME: {disconnect_time}")
+#                     logger.info(f"Cancelled {task_name} recording task")
+#             logger.info(f"Both recordings stopped at SAME TIME: {disconnect_time}")
         
 #         # Save transcript, upload to Azure, and save links - then evaluation runs from Azure
 #         async def save_and_upload_workflow():
 #             """Save transcript, upload to Azure, save links, then evaluate from Azure"""
 #             try:
-#                 logger.info(f"💾 Saving transcript for {participant.identity}...")
+#                 logger.info(f"Saving transcript for {participant.identity}...")
 #                 transcript_path = await write_transcript(session)
                 
 #                 if transcript_path:
 #                     participant_transcript_files[participant.identity] = transcript_path
-#                     logger.info(f"✅ Transcript saved: {transcript_path}")
+#                     logger.info(f"Transcript saved: {transcript_path}")
                     
 #                     # Wait for video to be ready (with timeout)
 #                     logger.info(f"⏳ Waiting for video to be ready...")
@@ -714,7 +714,7 @@
 #                         if participant.identity in participant_recording_files:
 #                             combined_video_path = participant_recording_files[participant.identity].get('combined')
 #                             if combined_video_path and os.path.exists(combined_video_path):
-#                                 logger.info(f"✅ Video ready: {combined_video_path}")
+#                                 logger.info(f"Video ready: {combined_video_path}")
 #                                 break
 #                         await asyncio.sleep(1)
 #                         waited += 1
@@ -730,34 +730,34 @@
 #                             from save_links import save_azure_links
                             
 #                             # Upload transcript to Azure
-#                             logger.info(f"📤 Uploading transcript to Azure...")
+#                             logger.info(f"Uploading transcript to Azure...")
 #                             transcript_result = upload_transcript_to_azure(transcript_path)
                             
 #                             if not transcript_result.get('success'):
-#                                 logger.error(f"❌ Failed to upload transcript: {transcript_result.get('error')}")
+#                                 logger.error(f"Failed to upload transcript: {transcript_result.get('error')}")
 #                                 return
                             
 #                             transcript_url = transcript_result['blob_url']
-#                             logger.info(f"✅ Transcript uploaded: {transcript_url[:80]}...")
+#                             logger.info(f"Transcript uploaded: {transcript_url[:80]}...")
                             
 #                             # Upload video if ready
 #                             video_url = None
 #                             if combined_video_path and os.path.exists(combined_video_path):
-#                                 logger.info(f"📤 Uploading video to Azure...")
+#                                 logger.info(f"Uploading video to Azure...")
 #                                 video_result = upload_video_to_azure(combined_video_path)
                                 
 #                                 if video_result.get('success'):
 #                                     video_url = video_result['blob_url']
-#                                     logger.info(f"✅ Video uploaded: {video_url[:80]}...")
+#                                     logger.info(f"Video uploaded: {video_url[:80]}...")
 #                                 else:
-#                                     logger.warning(f"⚠️ Video upload failed: {video_result.get('error')}")
+#                                     logger.warning(f"Video upload failed: {video_result.get('error')}")
 #                                     video_url = "pending"
 #                             else:
-#                                 logger.warning(f"⚠️ Video not ready yet, using placeholder")
+#                                 logger.warning(f"Video not ready yet, using placeholder")
 #                                 video_url = "pending"
                             
 #                             # Save links JSON (fast, no evaluation here)
-#                             logger.info(f"💾 Saving Azure links to JSON file...")
+#                             logger.info(f"Saving Azure links to JSON file...")
 #                             result = save_azure_links(
 #                                 participant_identity=participant.identity,
 #                                 video_url=video_url,
@@ -767,13 +767,13 @@
                             
 #                             if result and result.get('success'):
 #                                 links_file = result.get('links_file')
-#                                 logger.info(f"✅ Links saved: {links_file}")
+#                                 logger.info(f"Links saved: {links_file}")
                                 
 #                                 # Trigger evaluation via API (fire and forget)
 #                                 try:
 #                                     import requests
 #                                     api_url = os.getenv('API_SERVER_URL', 'http://localhost:5001')
-#                                     logger.info(f"🔔 Triggering evaluation via API...")
+#                                     logger.info(f"Triggering evaluation via API...")
                                     
 #                                     requests.post(
 #                                         f"{api_url}/api/evaluations/evaluate_from_links",
@@ -783,26 +783,26 @@
 #                                         },
 #                                         timeout=2
 #                                     )
-#                                     logger.info(f"✅ Evaluation API triggered")
+#                                     logger.info(f"Evaluation API triggered")
 #                                 except Exception as e:
-#                                     logger.warning(f"⚠️ Failed to trigger evaluation API: {e}")
+#                                     logger.warning(f"Failed to trigger evaluation API: {e}")
 #                             else:
-#                                 logger.error(f"❌ Failed to save links")
+#                                 logger.error(f"Failed to save links")
                                 
 #                         except Exception as e:
-#                             logger.error(f"❌ Upload error: {e}")
+#                             logger.error(f"Upload error: {e}")
 #                             import traceback
 #                             traceback.print_exc()
                     
 #                     # Start upload in daemon thread (won't block exit, NOT tracked in background_tasks)
 #                     upload_thread = threading.Thread(target=upload_and_save_links_background, daemon=True, name="UploadThread")
 #                     upload_thread.start()
-#                     logger.info(f"🚀 Upload started in background (independent daemon thread)")
+#                     logger.info(f"Upload started in background (independent daemon thread)")
                     
 #                 else:
-#                     logger.error(f"❌ Failed to save transcript")
+#                     logger.error(f"Failed to save transcript")
 #             except Exception as e:
-#                 logger.error(f"❌ Error: {e}")
+#                 logger.error(f"Error: {e}")
 #                 import traceback
 #                 traceback.print_exc()
         
@@ -832,7 +832,7 @@
         
 #         elif track.kind == rtc.TrackKind.KIND_AUDIO:
 #             # Start audio recording immediately - NO WAIT for video
-#             logger.info(f"🎤 Audio track - starting independent recording")
+#             logger.info(f"Audio track - starting independent recording")
 #             audio_task = asyncio.create_task(handle_audio_recording(track, participant.identity))
 #             participant_recording_tasks[participant.identity]['audio'] = audio_task
 
@@ -890,7 +890,7 @@
 #     def filter(self, record):
 #         # Suppress all errors from Deepgram-related loggers
 #         logger_name = record.name.lower()
-#         if "deepgram" in logger_name or "livekit.plugins.deepgram" in logger_name:
+#         if "deepgram"in logger_name or "livekit.plugins.deepgram"in logger_name:
 #             return False  # Don't log any Deepgram errors
 #         return True  # Log everything else
 #
@@ -981,7 +981,7 @@
 #         use_api=use_api
 #     )
 #
-#     return f"   Overall Score: {evaluation.get('overall_score', 'N/A')}/10", f"   Interview Performance: {evaluation.get('interview_performance', 'N/A')}/10"
+#     return f"Overall Score: {evaluation.get('overall_score', 'N/A')}/10", f"Interview Performance: {evaluation.get('interview_performance', 'N/A')}/10"
 #
 #
 #
@@ -1519,7 +1519,7 @@ async def write_transcript(session: AgentSession) -> Optional[str]:
     with open(absolute_path, 'w') as f:
         json.dump(full_transcript, f, indent=2)
 
-    logger.info(f"✅ Transcript saved: {absolute_path}")
+    logger.info(f"Transcript saved: {absolute_path}")
     return absolute_path
 
 
@@ -1612,7 +1612,7 @@ async  def evaluate_interview(
         use_api=use_api
     )
 
-    return f"   Overall Score: {evaluation.get('overall_score', 'N/A')}/10", f"   Interview Performance: {evaluation.get('interview_performance', 'N/A')}/10"
+    return f"Overall Score: {evaluation.get('overall_score', 'N/A')}/10", f"Interview Performance: {evaluation.get('interview_performance', 'N/A')}/10"
 
 
 async def cleanup_local_files(combined_video_path: str, transcript_path: str,
@@ -1645,12 +1645,12 @@ async def cleanup_local_files(combined_video_path: str, transcript_path: str,
         if file_path and os.path.exists(file_path):
             try:
                 os.remove(file_path)
-                logger.info(f"🗑️  Deleted: {file_path}")
+                logger.info(f"Deleted: {file_path}")
             except Exception as e:
-                logger.error(f"❌ Failed to delete {file_path}: {e}")
+                logger.error(f"Failed to delete {file_path}: {e}")
                 all_deleted = False
         elif file_path:
-            logger.warning(f"⚠️  File not found: {file_path}")
+            logger.warning(f"File not found: {file_path}")
 
     return all_deleted
 
@@ -1693,8 +1693,8 @@ async def entrypoint(ctx: JobContext):
 
     async def shutdown_callback():
         """Cleanup on shutdown - exit immediately, daemon threads handle rest"""
-        logger.info("🛑 Agent session ending - uploads continue in background")
-        logger.info("✅ Agent session ended - process will exit now")
+        logger.info("Agent session ending - uploads continue in background")
+        logger.info("Agent session ended - process will exit now")
 
     ctx.add_shutdown_callback(shutdown_callback)
     await ctx.connect()
@@ -1745,59 +1745,59 @@ async def entrypoint(ctx: JobContext):
         # Prevent duplicate uploads
         if participant_identity in participant_upload_in_progress:
             if participant_upload_in_progress[participant_identity]:
-                logger.info(f"⚠️ Upload already in progress for {participant_identity}, skipping...")
+                logger.info(f"Upload already in progress for {participant_identity}, skipping...")
                 return
 
         participant_upload_in_progress[participant_identity] = True
 
         try:
-            logger.info(f"🚀 Starting upload and cleanup workflow for {participant_identity}")
+            logger.info(f"Starting upload and cleanup workflow for {participant_identity}")
 
             # Step 1: Upload combined video to Azure
-            logger.info(f"📤 Uploading combined video to Azure...")
+            logger.info(f"Uploading combined video to Azure...")
             video_upload_result = upload_video_to_azure(combined_video_path)
 
             if not video_upload_result.get('success'):
-                logger.error(f"❌ Failed to upload video: {video_upload_result.get('error')}")
+                logger.error(f"Failed to upload video: {video_upload_result.get('error')}")
                 return
 
             video_url = video_upload_result['blob_url']
-            logger.info(f"✅ Video uploaded successfully: {video_url}")
+            logger.info(f"Video uploaded successfully: {video_url}")
 
             # Step 2: Upload transcript to Azure
-            logger.info(f"📤 Uploading transcript to Azure...")
+            logger.info(f"Uploading transcript to Azure...")
             transcript_upload_result = upload_transcript_to_azure(transcript_path)
 
             if not transcript_upload_result.get('success'):
-                logger.error(f"❌ Failed to upload transcript: {transcript_upload_result.get('error')}")
+                logger.error(f"Failed to upload transcript: {transcript_upload_result.get('error')}")
                 return
 
             transcript_url = transcript_upload_result['blob_url']
-            logger.info(f"✅ Transcript uploaded successfully: {transcript_url}")
+            logger.info(f"Transcript uploaded successfully: {transcript_url}")
 
             # Step 3: Save Azure links to file
-            logger.info(f"💾 Saving Azure links...")
+            logger.info(f"Saving Azure links...")
             links_filename = None
             try:
                 links_result = save_azure_links(participant_identity, video_url, transcript_url, auto_evaluate=False)
                 if links_result and isinstance(links_result, dict) and links_result.get('links_file'):
                     links_filename = links_result.get('links_file')
-                    logger.info(f"✅ Links saved successfully: {links_filename}")
+                    logger.info(f"Links saved successfully: {links_filename}")
                 else:
-                    logger.warning(f"⚠️ Links result format unexpected: {links_result}")
+                    logger.warning(f"Links result format unexpected: {links_result}")
                     # Fallback: construct filename manually
                     links_filename = f"azure_links/{participant_identity}_{datetime.now().strftime('%Y%m%d_%H%M%S')}_links.json"
-                    logger.info(f"✅ Using fallback links filename: {links_filename}")
+                    logger.info(f"Using fallback links filename: {links_filename}")
             except Exception as e:
-                logger.error(f"❌ Error saving links: {e}")
+                logger.error(f"Error saving links: {e}")
                 import traceback
                 traceback.print_exc()
                 # Still try to construct filename for evaluation
                 links_filename = f"azure_links/{participant_identity}_{datetime.now().strftime('%Y%m%d_%H%M%S')}_links.json"
-                logger.info(f"⚠️ Using fallback links filename after error: {links_filename}")
+                logger.info(f"Using fallback links filename after error: {links_filename}")
 
             # Step 3.5: Evaluation happens in disconnect handler, skip duplicate evaluation here
-            logger.info(f"ℹ️ Evaluation will run automatically in disconnect handler")
+            logger.info(f"Evaluation will run automatically in disconnect handler")
 
             # Step 4: Get original video and audio paths for cleanup
             original_video_path = None
@@ -1816,14 +1816,14 @@ async def entrypoint(ctx: JobContext):
             )
 
             if cleanup_success:
-                logger.info(f"✅ All local files cleaned up successfully!")
+                logger.info(f"All local files cleaned up successfully!")
             else:
-                logger.warning(f"⚠️  Some files could not be deleted")
+                logger.warning(f"Some files could not be deleted")
 
-            logger.info(f"🎉 Upload and cleanup workflow completed for {participant_identity}")
+            logger.info(f"Upload and cleanup workflow completed for {participant_identity}")
 
         except Exception as e:
-            logger.error(f"❌ Error in upload and cleanup workflow: {e}")
+            logger.error(f"Error in upload and cleanup workflow: {e}")
             import traceback
             traceback.print_exc()
         finally:
@@ -1833,7 +1833,7 @@ async def entrypoint(ctx: JobContext):
     async def combine_video_audio(participant_identity: str):
         """Combine video and audio files into a single MP4 with perfect sync"""
         if participant_identity not in participant_recording_files:
-            logger.warning(f"⚠️ No recording files found for {participant_identity}")
+            logger.warning(f"No recording files found for {participant_identity}")
             return
 
         files = participant_recording_files[participant_identity]
@@ -1841,16 +1841,16 @@ async def entrypoint(ctx: JobContext):
         audio_file = files.get('audio')
 
         if not video_file or not audio_file:
-            logger.warning(f"⚠️ Missing video or audio file for {participant_identity}")
-            logger.info(f"   Video: {video_file}")
-            logger.info(f"   Audio: {audio_file}")
+            logger.warning(f"Missing video or audio file for {participant_identity}")
+            logger.info(f"Video: {video_file}")
+            logger.info(f"Audio: {audio_file}")
             return
 
         # Check if both files exist
         if not os.path.exists(video_file) or not os.path.exists(audio_file):
-            logger.error(f"❌ Files not found:")
-            logger.error(f"   Video: {os.path.exists(video_file)} - {video_file}")
-            logger.error(f"   Audio: {os.path.exists(audio_file)} - {audio_file}")
+            logger.error(f"Files not found:")
+            logger.error(f"Video: {os.path.exists(video_file)} - {video_file}")
+            logger.error(f"Audio: {os.path.exists(audio_file)} - {audio_file}")
             return
 
         # Create combined filename
@@ -1858,10 +1858,10 @@ async def entrypoint(ctx: JobContext):
         timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
         combined_file = f"recordings/combined/{participant_identity}_{timestamp}_COMBINED.mp4"
 
-        logger.info(f"🎬 Combining video and audio...")
-        logger.info(f"   Video: {video_file}")
-        logger.info(f"   Audio: {audio_file}")
-        logger.info(f"   Output: {combined_file}")
+        logger.info(f"Combining video and audio...")
+        logger.info(f"Video: {video_file}")
+        logger.info(f"Audio: {audio_file}")
+        logger.info(f"Output: {combined_file}")
 
         try:
             # Use ffmpeg to combine video and audio
@@ -1889,26 +1889,26 @@ async def entrypoint(ctx: JobContext):
             )
 
             if result.returncode == 0:
-                logger.info(f"✅ Successfully combined video and audio!")
-                logger.info(f"📁 Combined file: {combined_file}")
+                logger.info(f"Successfully combined video and audio!")
+                logger.info(f"Combined file: {combined_file}")
 
                 # Check file size
                 size_mb = os.path.getsize(combined_file) / (1024 * 1024)
-                logger.info(f"📊 File size: {size_mb:.2f} MB")
+                logger.info(f"File size: {size_mb:.2f} MB")
 
                 # Track combined file for this participant
                 if participant_identity not in participant_recording_files:
                     participant_recording_files[participant_identity] = {}
                 participant_recording_files[participant_identity]['combined'] = combined_file
-                logger.info(f"✅ Video tracked and ready for upload (will be uploaded by disconnect handler)")
+                logger.info(f"Video tracked and ready for upload (will be uploaded by disconnect handler)")
             else:
-                logger.error(f"❌ ffmpeg error:")
-                logger.error(f"   {result.stderr}")
+                logger.error(f"ffmpeg error:")
+                logger.error(f"{result.stderr}")
 
         except FileNotFoundError:
-            logger.error(f"❌ ffmpeg not found! Install with: brew install ffmpeg")
+            logger.error(f"ffmpeg not found! Install with: brew install ffmpeg")
         except Exception as e:
-            logger.error(f"❌ Error combining files: {e}")
+            logger.error(f"Error combining files: {e}")
             import traceback
             traceback.print_exc()
 
@@ -1925,8 +1925,8 @@ async def entrypoint(ctx: JobContext):
         valid_frame_count = 0
 
         try:
-            logger.info(f"🎥 Starting VIDEO recording for {participant_identity}")
-            logger.info(f"🎥 Mode: TIMESTAMP TRACKING (for perfect audio sync)")
+            logger.info(f"Starting VIDEO recording for {participant_identity}")
+            logger.info(f"Mode: TIMESTAMP TRACKING (for perfect audio sync)")
 
             # STEP 1: Collect ALL frames with timestamps
             async for event in video_stream:
@@ -1938,7 +1938,7 @@ async def entrypoint(ctx: JobContext):
                     # Use SHARED start time for this participant
                     if participant_identity not in participant_recording_times:
                         participant_recording_times[participant_identity] = {'start': current_time, 'end': None}
-                        logger.info(f"🎬 Recording START time set: {current_time}")
+                        logger.info(f"Recording START time set: {current_time}")
 
                     if start_time is None:
                         start_time = participant_recording_times[participant_identity]['start']
@@ -1950,14 +1950,14 @@ async def entrypoint(ctx: JobContext):
 
                     # Skip frames with invalid dimensions (corrupted frames)
                     if frame_width < 100 or frame_height < 100:
-                        logger.debug(f"⚠️ Skipping corrupted frame {frame_count}: {frame_width}x{frame_height}")
+                        logger.debug(f"Skipping corrupted frame {frame_count}: {frame_width}x{frame_height}")
                         continue
 
                     # Capture width/height from FIRST valid frame only
                     if width is None:
                         width = frame_width
                         height = frame_height
-                        logger.info(f"🎥 Detected resolution: {width}x{height}")
+                        logger.info(f"Detected resolution: {width}x{height}")
 
                     # Resize frames to match target resolution instead of skipping
                     buffer = frame_rgba.data
@@ -1966,7 +1966,7 @@ async def entrypoint(ctx: JobContext):
                     # Resize if resolution changed
                     if frame_width != width or frame_height != height:
                         logger.debug(
-                            f"🔄 Resizing frame {frame_count} from {frame_width}x{frame_height} to {width}x{height}")
+                            f"Resizing frame {frame_count} from {frame_width}x{frame_height} to {width}x{height}")
                         img_rgba = cv2.resize(img_rgba, (width, height), interpolation=cv2.INTER_LINEAR)
 
                     img_array = cv2.cvtColor(img_rgba, cv2.COLOR_RGBA2BGR)
@@ -1978,17 +1978,17 @@ async def entrypoint(ctx: JobContext):
                     # Log progress every 30 frames
                     if valid_frame_count % 30 == 0:
                         elapsed = (current_time - start_time).total_seconds()
-                        logger.info(f"🎥 Recorded {valid_frame_count} valid frames ({elapsed:.1f}s)")
+                        logger.info(f"Recorded {valid_frame_count} valid frames ({elapsed:.1f}s)")
 
                 except Exception as frame_error:
-                    logger.error(f"❌ Error processing frame {frame_count}: {frame_error}")
+                    logger.error(f"Error processing frame {frame_count}: {frame_error}")
                     continue
 
         except asyncio.CancelledError:
-            logger.info(f"🛑 Video recording cancelled (participant disconnected)")
+            logger.info(f"Video recording cancelled (participant disconnected)")
             # Use SHARED end time set by disconnect handler
         except Exception as e:
-            logger.error(f"❌ Video stream error: {e}")
+            logger.error(f"Video stream error: {e}")
             import traceback
             traceback.print_exc()
         finally:
@@ -2003,7 +2003,7 @@ async def entrypoint(ctx: JobContext):
             # Update SHARED end time
             if participant_identity in participant_recording_times:
                 participant_recording_times[participant_identity]['end'] = end_time
-                logger.info(f"🎬 Video recording END time set: {end_time}")
+                logger.info(f"Video recording END time set: {end_time}")
 
             # STEP 2: Create video with EXACT duration matching audio (fill gaps with duplicate frames)
             if start_time and end_time and len(frames_with_timestamps) > 0 and width and height:
@@ -2017,19 +2017,19 @@ async def entrypoint(ctx: JobContext):
                 total_duration = (end_time - start_time).total_seconds()
                 target_fps = 30.0  # Target FPS for smooth video
 
-                logger.info(f"✅ Frame collection complete!")
-                logger.info(f"✅ Valid frames collected: {len(frames_with_timestamps)}")
-                logger.info(f"✅ Total recording duration: {total_duration:.1f} seconds")
-                logger.info(f"📐 Video resolution: {width}x{height}")
+                logger.info(f"Frame collection complete!")
+                logger.info(f"Valid frames collected: {len(frames_with_timestamps)}")
+                logger.info(f"Total recording duration: {total_duration:.1f} seconds")
+                logger.info(f"Video resolution: {width}x{height}")
 
                 # Validate resolution
                 if width < 100 or height < 100:
-                    logger.error(f"❌ Invalid resolution: {width}x{height}")
+                    logger.error(f"Invalid resolution: {width}x{height}")
                     return
 
                 # STEP 3: Generate frames at regular intervals (30 FPS) to match audio duration
                 target_frame_count = int(total_duration * target_fps)
-                logger.info(f"🎯 Target frames for {total_duration:.1f}s @ {target_fps} FPS: {target_frame_count}")
+                logger.info(f"Target frames for {total_duration:.1f}s @ {target_fps} FPS: {target_frame_count}")
 
                 output_frames = []
                 frame_idx = 0
@@ -2053,7 +2053,7 @@ async def entrypoint(ctx: JobContext):
                     # Use the closest frame
                     output_frames.append(frames_with_timestamps[frame_idx][1])
 
-                logger.info(f"✅ Generated {len(output_frames)} frames (filled gaps for continuous playback)")
+                logger.info(f"Generated {len(output_frames)} frames (filled gaps for continuous playback)")
 
                 # STEP 4: Write ALL frames to video
                 os.makedirs("recordings/video", exist_ok=True)
@@ -2065,43 +2065,43 @@ async def entrypoint(ctx: JobContext):
                 video_writer = cv2.VideoWriter(video_filename, fourcc, target_fps, (width, height))
 
                 if not video_writer.isOpened():
-                    logger.error(f"❌ Failed to open video writer!")
+                    logger.error(f"Failed to open video writer!")
                     return
 
-                logger.info(f"🎥 Writing {len(output_frames)} frames to: {video_filename}")
-                logger.info(f"🎥 Settings: {width}x{height} @ {target_fps} FPS")
+                logger.info(f"Writing {len(output_frames)} frames to: {video_filename}")
+                logger.info(f"Settings: {width}x{height} @ {target_fps} FPS")
 
                 # Write ALL frames
                 for i, frame in enumerate(output_frames):
                     video_writer.write(frame)
                     if (i + 1) % 100 == 0 or (i + 1) == len(output_frames):
-                        logger.info(f"🎥 Written {i + 1}/{len(output_frames)} frames...")
+                        logger.info(f"Written {i + 1}/{len(output_frames)} frames...")
 
                 video_writer.release()
-                logger.info(f"✅ Video writer released")
+                logger.info(f"Video writer released")
 
-                logger.info(f"🎉 Video saved successfully!")
-                logger.info(f"📁 File: {video_filename}")
-                logger.info(f"📊 Actual frames captured: {len(frames_with_timestamps)}")
-                logger.info(f"📊 Output frames (with gap filling): {len(output_frames)}")
-                logger.info(f"⏱️  Video duration: {total_duration:.1f} seconds")
-                logger.info(f"🎬 FPS: {target_fps}")
-                logger.info(f"🔄 Gap filling: {len(output_frames) - len(frames_with_timestamps)} duplicate frames")
-                logger.info(f"📺 Video duration will MATCH audio duration perfectly!")
+                logger.info(f"Video saved successfully!")
+                logger.info(f"File: {video_filename}")
+                logger.info(f"Actual frames captured: {len(frames_with_timestamps)}")
+                logger.info(f"Output frames (with gap filling): {len(output_frames)}")
+                logger.info(f"Video duration: {total_duration:.1f} seconds")
+                logger.info(f"FPS: {target_fps}")
+                logger.info(f"Gap filling: {len(output_frames) - len(frames_with_timestamps)} duplicate frames")
+                logger.info(f"Video duration will MATCH audio duration perfectly!")
 
                 # Track video filename for combining later
                 if participant_identity not in participant_recording_files:
                     participant_recording_files[participant_identity] = {}
                 participant_recording_files[participant_identity]['video'] = video_filename
-                logger.info(f"✅ Video filename tracked for combining")
+                logger.info(f"Video filename tracked for combining")
 
                 # Check if audio is also done - if yes, combine them!
                 if 'audio' in participant_recording_files.get(participant_identity, {}):
-                    logger.info(f"🎬 Both video and audio ready - combining now!")
+                    logger.info(f"Both video and audio ready - combining now!")
                     task = asyncio.create_task(combine_video_audio(participant_identity))
                     background_tasks.append(task)
             else:
-                logger.warning(f"⚠️ No valid frames were recorded!")
+                logger.warning(f"No valid frames were recorded!")
 
     # Record audio with SHARED TIMESTAMPS for perfect video sync
     async def handle_audio_recording(audio_track: rtc.Track, participant_identity: str):
@@ -2115,7 +2115,7 @@ async def entrypoint(ctx: JobContext):
         start_time = None
 
         try:
-            logger.info(f"🎤 Starting AUDIO recording for {participant_identity}")
+            logger.info(f"Starting AUDIO recording for {participant_identity}")
 
             async for event in audio_stream:
                 current_time = datetime.now()
@@ -2125,7 +2125,7 @@ async def entrypoint(ctx: JobContext):
                 # Use SHARED start time for this participant
                 if participant_identity not in participant_recording_times:
                     participant_recording_times[participant_identity] = {'start': current_time, 'end': None}
-                    logger.info(f"🎬 Recording START time set: {current_time}")
+                    logger.info(f"Recording START time set: {current_time}")
 
                 if start_time is None:
                     start_time = participant_recording_times[participant_identity]['start']
@@ -2139,8 +2139,8 @@ async def entrypoint(ctx: JobContext):
                     timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
                     audio_filename = f"recordings/audio/{participant_identity}_{timestamp}_AUDIO.wav"
 
-                    logger.info(f"🎤 Recording to: {audio_filename}")
-                    logger.info(f"🎤 Sample rate: {sample_rate}Hz, Channels: {num_channels}")
+                    logger.info(f"Recording to: {audio_filename}")
+                    logger.info(f"Sample rate: {sample_rate}Hz, Channels: {num_channels}")
 
                 # Store audio data (no processing, keep quality)
                 audio_data = np.frombuffer(audio_frame.data, dtype=np.int16)
@@ -2148,13 +2148,13 @@ async def entrypoint(ctx: JobContext):
 
                 # Log progress
                 if audio_frame_count % 100 == 0:
-                    logger.info(f"🎤 Audio: {audio_frame_count} frames")
+                    logger.info(f"Audio: {audio_frame_count} frames")
 
         except asyncio.CancelledError:
-            logger.info(f"🛑 Audio recording cancelled (participant disconnected)")
+            logger.info(f"Audio recording cancelled (participant disconnected)")
             # Use SHARED end time set by disconnect handler
         except Exception as e:
-            logger.error(f"❌ Audio error: {e}")
+            logger.error(f"Audio error: {e}")
             import traceback
             traceback.print_exc()
         finally:
@@ -2172,7 +2172,7 @@ async def entrypoint(ctx: JobContext):
                 current_end = participant_recording_times[participant_identity]['end']
                 if current_end is None or end_time > current_end:
                     participant_recording_times[participant_identity]['end'] = end_time
-                logger.info(f"🎬 Audio recording END time set: {end_time}")
+                logger.info(f"Audio recording END time set: {end_time}")
 
             # Save audio to WAV (lossless)
             if audio_frames and sample_rate:
@@ -2189,23 +2189,23 @@ async def entrypoint(ctx: JobContext):
                         shared_end = participant_recording_times[participant_identity]['end']
                         if shared_start and shared_end:
                             duration = (shared_end - shared_start).total_seconds()
-                            logger.info(f"✅ Audio saved: {audio_filename} ({audio_frame_count} frames)")
-                            logger.info(f"🎬 Audio uses SHARED timeline: {duration:.1f} seconds")
+                            logger.info(f"Audio saved: {audio_filename} ({audio_frame_count} frames)")
+                            logger.info(f"Audio uses SHARED timeline: {duration:.1f} seconds")
 
                     # Track audio filename for combining later
                     if participant_identity not in participant_recording_files:
                         participant_recording_files[participant_identity] = {}
                     participant_recording_files[participant_identity]['audio'] = audio_filename
-                    logger.info(f"✅ Audio filename tracked for combining")
+                    logger.info(f"Audio filename tracked for combining")
 
                     # Check if video is also done - if yes, combine them!
                     if 'video' in participant_recording_files.get(participant_identity, {}):
-                        logger.info(f"🎬 Both video and audio ready - combining now!")
+                        logger.info(f"Both video and audio ready - combining now!")
                         task = asyncio.create_task(combine_video_audio(participant_identity))
                         background_tasks.append(task)
 
                 except Exception as e:
-                    logger.error(f"❌ Error saving audio: {e}")
+                    logger.error(f"Error saving audio: {e}")
                     import traceback
                     traceback.print_exc()
 
@@ -2214,7 +2214,7 @@ async def entrypoint(ctx: JobContext):
     def on_participant_disconnected(participant: rtc.RemoteParticipant):
         """Handle participant disconnect - IMMEDIATELY stop both video and audio"""
         disconnect_time = datetime.now()
-        logger.info(f"🔴 Participant disconnected: {participant.identity}")
+        logger.info(f"Participant disconnected: {participant.identity}")
 
 
 
@@ -2222,13 +2222,13 @@ async def entrypoint(ctx: JobContext):
         # Set SHARED end time IMMEDIATELY
         if participant.identity in participant_recording_times:
             participant_recording_times[participant.identity]['end'] = disconnect_time
-            logger.info(f"🎬 SHARED END time locked: {disconnect_time}")
+            logger.info(f"SHARED END time locked: {disconnect_time}")
 
             # Calculate final duration
             start = participant_recording_times[participant.identity]['start']
             duration = (disconnect_time - start).total_seconds()
-            logger.info(f"📊 Final recording duration: {duration:.1f} seconds")
-            logger.info(f"🎬 Both video and audio will use this EXACT timeline")
+            logger.info(f"Final recording duration: {duration:.1f} seconds")
+            logger.info(f"Both video and audio will use this EXACT timeline")
 
         # Cancel recording tasks to stop immediately (not wait for streams)
         if participant.identity in participant_recording_tasks:
@@ -2236,11 +2236,11 @@ async def entrypoint(ctx: JobContext):
             for task_name, task in tasks.items():
                 if task and not task.done():
                     task.cancel()
-                    logger.info(f"🛑 Cancelled {task_name} recording task")
-            logger.info(f"✅ Both recordings stopped at SAME TIME: {disconnect_time}")
+                    logger.info(f"Cancelled {task_name} recording task")
+            logger.info(f"Both recordings stopped at SAME TIME: {disconnect_time}")
 
 
-        # logger.info(f"💾 Saving transcript for {participant.identity}...")
+        # logger.info(f"Saving transcript for {participant.identity}...")
 
         # Save transcript, upload to Azure, and save links - then evaluation runs from Azure
         async def save_and_upload_workflow():
@@ -2250,21 +2250,21 @@ async def entrypoint(ctx: JobContext):
             async def run_evaluation_background():
                 """Run evaluation in background and log when done"""
                 try:
-                    logger.info(f"💾 Starting interview evaluation in background...")
+                    logger.info(f"Starting interview evaluation in background...")
                     evaluat = await evaluate_interview("/Users/danielsamuel/Documents/can_show_in_frontend/transcript_20251209_135356.json")
-                    logger.info(f"💾 ✅ Interview evaluation completed: {evaluat}")
+                    logger.info(f"Interview evaluation completed: {evaluat}")
                 except Exception as e:
-                    logger.error(f"❌ Evaluation error: {e}")
+                    logger.error(f"Evaluation error: {e}")
                     import traceback
                     traceback.print_exc()
 
             # Start evaluation as background task - continues immediately
             eval_task = asyncio.create_task(run_evaluation_background())
             background_tasks.append(eval_task)
-            logger.info(f"💾 Evaluation started in background - workflow continues...")
+            logger.info(f"Evaluation started in background - workflow continues...")
 
             try:
-                logger.info(f"💾 Saving transcript for {participant.identity}...")
+                logger.info(f"Saving transcript for {participant.identity}...")
                 transcript_path = await write_transcript(session)
 
 
@@ -2285,7 +2285,7 @@ async def entrypoint(ctx: JobContext):
                         if participant.identity in participant_recording_files:
                             combined_video_path = participant_recording_files[participant.identity].get('combined')
                             if combined_video_path and os.path.exists(combined_video_path):
-                                logger.info(f"✅ Video ready: {combined_video_path}")
+                                logger.info(f"Video ready: {combined_video_path}")
                                 break
                         await asyncio.sleep(1)
                         waited += 1
@@ -2301,34 +2301,34 @@ async def entrypoint(ctx: JobContext):
                             from save_links import save_azure_links
 
                             # Upload transcript to Azure
-                            logger.info(f"📤 Uploading transcript to Azure...")
+                            logger.info(f"Uploading transcript to Azure...")
                             transcript_result = upload_transcript_to_azure(transcript_path)
 
                             if not transcript_result.get('success'):
-                                logger.error(f"❌ Failed to upload transcript: {transcript_result.get('error')}")
+                                logger.error(f"Failed to upload transcript: {transcript_result.get('error')}")
                                 return
 
                             transcript_url = transcript_result['blob_url']
-                            logger.info(f"✅ Transcript uploaded: {transcript_url[:80]}...")
+                            logger.info(f"Transcript uploaded: {transcript_url[:80]}...")
 
                             # Upload video if ready
                             video_url = None
                             if combined_video_path and os.path.exists(combined_video_path):
-                                logger.info(f"📤 Uploading video to Azure...")
+                                logger.info(f"Uploading video to Azure...")
                                 video_result = upload_video_to_azure(combined_video_path)
 
                                 if video_result.get('success'):
                                     video_url = video_result['blob_url']
-                                    logger.info(f"✅ Video uploaded: {video_url[:80]}...")
+                                    logger.info(f"Video uploaded: {video_url[:80]}...")
                                 else:
-                                    logger.warning(f"⚠️ Video upload failed: {video_result.get('error')}")
+                                    logger.warning(f"Video upload failed: {video_result.get('error')}")
                                     video_url = "pending"
                             else:
-                                logger.warning(f"⚠️ Video not ready yet, using placeholder")
+                                logger.warning(f"Video not ready yet, using placeholder")
                                 video_url = "pending"
 
                             # Save links JSON (fast, no evaluation here)
-                            logger.info(f"💾 Saving Azure links to JSON file...")
+                            logger.info(f"Saving Azure links to JSON file...")
                             result = save_azure_links(
                                 participant_identity=participant.identity,
                                 video_url=video_url,
@@ -2338,13 +2338,13 @@ async def entrypoint(ctx: JobContext):
 
                             if result and result.get('success'):
                                 links_file = result.get('links_file')
-                                logger.info(f"✅ Links saved: {links_file}")
+                                logger.info(f"Links saved: {links_file}")
 
                                 # Trigger evaluation via API (fire and forget)
                                 try:
                                     import requests
                                     api_url = os.getenv('API_SERVER_URL', 'http://localhost:5001')
-                                    logger.info(f"🔔 Triggering evaluation via API...")
+                                    logger.info(f"Triggering evaluation via API...")
 
                                     requests.post(
                                         f"{api_url}/api/evaluations/evaluate_from_links",
@@ -2354,14 +2354,14 @@ async def entrypoint(ctx: JobContext):
                                         },
                                         timeout=2
                                     )
-                                    logger.info(f"✅ Evaluation API triggered")
+                                    logger.info(f"Evaluation API triggered")
                                 except Exception as e:
-                                    logger.warning(f"⚠️ Failed to trigger evaluation API: {e}")
+                                    logger.warning(f"Failed to trigger evaluation API: {e}")
                             else:
-                                logger.error(f"❌ Failed to save links")
+                                logger.error(f"Failed to save links")
 
                         except Exception as e:
-                            logger.error(f"❌ Upload error: {e}")
+                            logger.error(f"Upload error: {e}")
                             import traceback
                             traceback.print_exc()
 
@@ -2369,12 +2369,12 @@ async def entrypoint(ctx: JobContext):
                     upload_thread = threading.Thread(target=upload_and_save_links_background, daemon=True,
                                                      name="UploadThread")
                     upload_thread.start()
-                    logger.info(f"🚀 Upload started in background (independent daemon thread)")
+                    logger.info(f"Upload started in background (independent daemon thread)")
 
                 else:
-                    logger.error(f"❌ Failed to save transcript")
+                    logger.error(f"Failed to save transcript")
             except Exception as e:
-                logger.error(f"❌ Error: {e}")
+                logger.error(f"Error: {e}")
                 import traceback
                 traceback.print_exc()
 
@@ -2404,7 +2404,7 @@ async def entrypoint(ctx: JobContext):
 
         elif track.kind == rtc.TrackKind.KIND_AUDIO:
             # Start audio recording immediately - NO WAIT for video
-            logger.info(f"🎤 Audio track - starting independent recording")
+            logger.info(f"Audio track - starting independent recording")
             audio_task = asyncio.create_task(handle_audio_recording(track, participant.identity))
             participant_recording_tasks[participant.identity]['audio'] = audio_task
 

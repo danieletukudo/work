@@ -1,0 +1,73 @@
+{
+  "session_history": {
+    "items": [
+      {
+        "id": "item_44eb602f3941",
+        "type": "agent_handoff",
+        "new_agent_id": "default_agent"
+      },
+      {
+        "id": "item_3e2c04b3f948",
+        "type": "message",
+        "role": "assistant",
+        "content": [
+          "Hello Max, and welcome to your interview! How are you doing today?"
+        ],
+        "interrupted": false,
+        "extra": {},
+        "metrics": {
+          "started_speaking_at": 1765804664.4499881,
+          "stopped_speaking_at": 1765804668.189409,
+          "llm_node_ttft": 1.227207041993097,
+          "tts_node_ttfb": 1.530057083000429
+        }
+      },
+      {
+        "id": "item_c7f88c86a4bf",
+        "type": "message",
+        "role": "user",
+        "content": [
+          "I'm good."
+        ],
+        "interrupted": false,
+        "transcript_confidence": 0.9970703,
+        "extra": {},
+        "metrics": {
+          "started_speaking_at": 1765804668.5684538,
+          "stopped_speaking_at": 1765804669.618322,
+          "transcription_delay": 1.4119212627410889,
+          "end_of_turn_delay": 1.4134230613708496,
+          "on_user_turn_completed_delay": 8.167000487446785e-06
+        }
+      },
+      {
+        "id": "item_eb40ecc1c4e9",
+        "type": "message",
+        "role": "assistant",
+        "content": [
+          "That's great to hear! Before we dive into the questions, I\u2019d like to clarify a few role-related terms. This position offers full-time hours and could involve remote work. Are you comfortable with these terms?"
+        ],
+        "interrupted": false,
+        "extra": {},
+        "metrics": {
+          "started_speaking_at": 1765804672.958679,
+          "stopped_speaking_at": 1765804685.670191,
+          "llm_node_ttft": 0.9177475420001429,
+          "tts_node_ttfb": 1.0050107080023736,
+          "e2e_latency": 3.3403570652008057
+        }
+      }
+    ]
+  },
+  "real_time_transcript": {
+    "user_transcript": "",
+    "agent_transcript": "",
+    "conversation_history": []
+  },
+  "timestamp": "20251215_151808",
+  "interview_metadata": {
+    "job_title": "Customer Service Representative",
+    "candidate_name": "Max Well",
+    "appid": "546"
+  }
+}
