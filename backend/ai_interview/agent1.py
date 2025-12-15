@@ -1473,7 +1473,8 @@ async def entrypoint(ctx: JobContext):
                                                     "interview_score": int(interview_score),
                                                     "vid": captured_video_url
                                                 }
-                                                
+
+
                                                 logger.info(f"CALLING WEBHOOK - URL: {webhook_url}")
                                                 logger.info(f"WEBHOOK PAYLOAD: {webhook_payload}")
                                                 
