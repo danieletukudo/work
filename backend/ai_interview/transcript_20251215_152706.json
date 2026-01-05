@@ -1,0 +1,74 @@
+{
+  "session_history": {
+    "items": [
+      {
+        "id": "item_04287d758d6b",
+        "type": "agent_handoff",
+        "new_agent_id": "default_agent"
+      },
+      {
+        "id": "item_a4f95ec59b78",
+        "type": "message",
+        "role": "assistant",
+        "content": [
+          "Hello Max! Welcome to your interview. How are you doing today?"
+        ],
+        "interrupted": false,
+        "extra": {},
+        "metrics": {
+          "started_speaking_at": 1765805210.055951,
+          "stopped_speaking_at": 1765805214.4004622,
+          "llm_node_ttft": 1.1434553750004852,
+          "tts_node_ttfb": 1.6621180000001914
+        }
+      },
+      {
+        "id": "item_31cced9f8763",
+        "type": "message",
+        "role": "user",
+        "content": [
+          "Fine."
+        ],
+        "interrupted": false,
+        "transcript_confidence": 0.7687988,
+        "extra": {},
+        "metrics": {
+          "started_speaking_at": 1765805220.578491,
+          "stopped_speaking_at": 1765805220.676221,
+          "transcription_delay": 0.9886672496795654,
+          "end_of_turn_delay": 0.9893021583557129,
+          "on_user_turn_completed_delay": 9.666997357271612e-06
+        }
+      },
+      {
+        "id": "item_6cb4e60e157f",
+        "type": "message",
+        "role": "user",
+        "content": [
+          "Fine."
+        ],
+        "interrupted": false,
+        "transcript_confidence": 0.9758301,
+        "extra": {},
+        "metrics": {
+          "started_speaking_at": 1765805222.37702,
+          "stopped_speaking_at": 1765805223.333494,
+          "transcription_delay": 1.054429054260254,
+          "end_of_turn_delay": 1.0547451972961426,
+          "on_user_turn_completed_delay": 5.875001079402864e-06
+        }
+      }
+    ]
+  },
+  "real_time_transcript": {
+    "user_transcript": "",
+    "agent_transcript": "",
+    "conversation_history": []
+  },
+  "timestamp": "20251215_152706",
+  "interview_metadata": {
+    "job_title": "Customer Service Representative",
+    "candidate_name": "Max Well",
+    "appid": "546"
+  }
+}
