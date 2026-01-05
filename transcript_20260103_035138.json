@@ -1,0 +1,66 @@
+{
+  "session_history": {
+    "items": [
+      {
+        "id": "item_fca7c508ad2a",
+        "type": "agent_handoff",
+        "new_agent_id": "default_agent"
+      },
+      {
+        "id": "item_dfb646b6b1d6",
+        "type": "message",
+        "role": "user",
+        "content": [
+          "Keep marching."
+        ],
+        "interrupted": false,
+        "transcript_confidence": 0.85498047,
+        "extra": {},
+        "metrics": {
+          "transcription_delay": 0.0,
+          "on_user_turn_completed_delay": 2.249998942716047e-06
+        }
+      },
+      {
+        "id": "item_86c3d54c2384",
+        "type": "message",
+        "role": "assistant",
+        "content": [
+          "Welcome to your interview! How are you doing today?"
+        ],
+        "interrupted": false,
+        "extra": {},
+        "metrics": {
+          "started_speaking_at": 1767405090.2187562,
+          "stopped_speaking_at": 1767405093.270962,
+          "llm_node_ttft": 1.3993682919972343,
+          "tts_node_ttfb": 1.6509750409968547
+        }
+      },
+      {
+        "id": "item_705ea3502490",
+        "type": "message",
+        "role": "user",
+        "content": [
+          "Yeah. I'm good."
+        ],
+        "interrupted": false,
+        "transcript_confidence": 0.9926758,
+        "extra": {},
+        "metrics": {
+          "started_speaking_at": 1767405095.268859,
+          "stopped_speaking_at": 1767405095.7695239,
+          "transcription_delay": 0.639564037322998,
+          "end_of_turn_delay": 0.6403253078460693,
+          "on_user_turn_completed_delay": 1.591700129210949e-05
+        }
+      }
+    ]
+  },
+  "real_time_transcript": {
+    "user_transcript": "",
+    "agent_transcript": "",
+    "conversation_history": []
+  },
+  "timestamp": "20260103_035138"
+}

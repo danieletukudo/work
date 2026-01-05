@@ -1,0 +1,67 @@
+version: '3.8'
+
+services:
+  backend:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: livekit-backend
+    ports:
+      - "5001:5001"
+    environment:
+      - LIVEKIT_URL=${LIVEKIT_URL}
+      - LIVEKIT_API_KEY=${LIVEKIT_API_KEY}
+      - LIVEKIT_API_SECRET=${LIVEKIT_API_SECRET}
+      # Add other environment variables as needed
+    volumes:
+      - ./recordings:/app/recordings
+      - ./proctoring_reports:/app/proctoring_reports
+      - ./proctoring_videos:/app/proctoring_videos
+      - ./video_cache:/app/video_cache
+      - ./downloads:/app/downloads
+      - ./azure_links:/app/azure_links
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('http://localhost:5001/health')"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+
+  frontend:
+    build:
+      context: ./agent-starter-react
+      dockerfile: Dockerfile
+    container_name: livekit-frontend
+    ports:
+      - "3000:3000"
+    environment:
+      - NEXT_PUBLIC_LIVEKIT_URL=${LIVEKIT_URL}
+      # Add other frontend environment variables as needed
+    depends_on:
+      - backend
+    restart: unless-stopped
+
+  # Optional: Agent service (if you want to run the agent separately)
+  agent:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: livekit-agent
+    command: ["python", "agent1.py"]
+    environment:
+      - LIVEKIT_URL=${LIVEKIT_URL}
+      - LIVEKIT_API_KEY=${LIVEKIT_API_KEY}
+      - LIVEKIT_API_SECRET=${LIVEKIT_API_SECRET}
+      # Add other environment variables as needed
+    volumes:
+      - ./recordings:/app/recordings
+      - ./proctoring_reports:/app/proctoring_reports
+      - ./proctoring_videos:/app/proctoring_videos
+      - ./video_cache:/app/video_cache
+      - ./downloads:/app/downloads
+      - ./azure_links:/app/azure_links
+    depends_on:
+      - backend
+    restart: unless-stopped
+

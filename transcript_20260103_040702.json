@@ -1,0 +1,105 @@
+{
+  "session_history": {
+    "items": [
+      {
+        "id": "item_71b3f6ae1fbc",
+        "type": "agent_handoff",
+        "new_agent_id": "default_agent"
+      },
+      {
+        "id": "item_0ff3b670ea68",
+        "type": "message",
+        "role": "user",
+        "content": [
+          "This This one keep going. We gotta keep learning."
+        ],
+        "interrupted": false,
+        "transcript_confidence": 0.77001953,
+        "extra": {},
+        "metrics": {
+          "started_speaking_at": 1767405992.471699,
+          "stopped_speaking_at": 1767405992.472028,
+          "transcription_delay": 0.6642568111419678,
+          "end_of_turn_delay": 0.6652698516845703,
+          "on_user_turn_completed_delay": 1.959000655915588e-06
+        }
+      },
+      {
+        "id": "item_385487d68797",
+        "type": "message",
+        "role": "assistant",
+        "content": [
+          "Hello! Welcome to your interview with Remote.ai. How are you doing today?"
+        ],
+        "interrupted": false,
+        "extra": {},
+        "metrics": {
+          "started_speaking_at": 1767405996.324428,
+          "stopped_speaking_at": 1767406001.794147,
+          "llm_node_ttft": 0.8985508330006269,
+          "tts_node_ttfb": 2.252061291001155,
+          "e2e_latency": 3.852400064468384
+        }
+      },
+      {
+        "id": "item_6fe2465fafdc",
+        "type": "message",
+        "role": "user",
+        "content": [
+          "I'm good."
+        ],
+        "interrupted": false,
+        "transcript_confidence": 0.99072266,
+        "extra": {},
+        "metrics": {
+          "started_speaking_at": 1767406004.127959,
+          "stopped_speaking_at": 1767406004.275469,
+          "transcription_delay": 0.6062107086181641,
+          "end_of_turn_delay": 0.6110429763793945,
+          "on_user_turn_completed_delay": 1.2999997125007212e-05
+        }
+      },
+      {
+        "id": "item_a12f52577147",
+        "type": "message",
+        "role": "user",
+        "content": [
+          "Yeah. I do."
+        ],
+        "interrupted": false,
+        "transcript_confidence": 0.90234375,
+        "extra": {},
+        "metrics": {
+          "started_speaking_at": 1767406005.7254028,
+          "stopped_speaking_at": 1767406006.6247838,
+          "transcription_delay": 1.2126731872558594,
+          "end_of_turn_delay": 1.214219093322754,
+          "on_user_turn_completed_delay": 1.0420008038636297e-06
+        }
+      },
+      {
+        "id": "item_9f57ad90c2c2",
+        "type": "message",
+        "role": "assistant",
+        "content": [
+          "That's great to hear! Before we dive into the interview, I want to confirm a few details regarding the position of AI Engineer. Are you comfortable with the remote work setup and the working hours?"
+        ],
+        "interrupted": false,
+        "extra": {},
+        "metrics": {
+          "started_speaking_at": 1767406010.3560278,
+          "stopped_speaking_at": 1767406022.0149188,
+          "llm_node_ttft": 0.7408295000022918,
+          "tts_node_ttfb": 1.7627048340000329,
+          "e2e_latency": 3.7312440872192383
+        }
+      }
+    ]
+  },
+  "real_time_transcript": {
+    "user_transcript": "",
+    "agent_transcript": "",
+    "conversation_history": []
+  },
+  "timestamp": "20260103_040702"
+}
