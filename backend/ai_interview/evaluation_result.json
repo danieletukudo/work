@@ -1,0 +1,129 @@
+{
+  "candidate_id": "cand_001",
+  "candidate_name": "Candidate Name",
+  "job_id": "job_001",
+  "overall_score": 3,
+  "technical_competency": 4,
+  "problem_solving": 3,
+  "communication": 2,
+  "experience_level": 3,
+  "cultural_fit": 4,
+  "interview_performance": 3,
+  "cv_verification": {
+    "consistency_level": "low",
+    "truthfulness_score": 4,
+    "discrepancies": [
+      "Candidate did not clearly articulate their experience in AI engineering as stated in CV.",
+      "Specific projects mentioned in CV were not elaborated upon in the interview."
+    ],
+    "verified_claims": [],
+    "unverified_or_contradictory_claims": [
+      "Claim of working on obstacle detection software was vague and not supported by specific details."
+    ]
+  },
+  "strengths": [
+    "Demonstrated basic knowledge of Python as a programming language.",
+    "Showed willingness to learn and adapt under pressure."
+  ],
+  "areas_for_improvement": [
+    "Communication skills need significant improvement for clarity and coherence.",
+    "Need to provide more detailed examples of technical experience."
+  ],
+  "hiring_recommendation": "no",
+  "detailed_feedback": "The candidate struggled significantly with communication throughout the interview, providing vague and unclear responses to most questions. Their answers lacked depth and specificity, which is critical for a technical role such as an ML Engineer. While they mentioned using Python and working on an obstacle detection software project, they failed to elaborate on their contributions or the technologies used, which raises concerns about their technical competency. Furthermore, there were discrepancies between their claims in the interview and their CV, leading to a low consistency score. Overall, the candidate does not meet the necessary requirements for the position based on their interview performance.",
+  "key_highlights": [
+    {
+      "category": "Technical Knowledge",
+      "highlight": "Mentioned using Python for projects.",
+      "evidence": "I used Python"
+    }
+  ],
+  "individual_question_scores": [
+    {
+      "question_number": 1,
+      "question_text": "Can you share a bit more about your background and experience in AI engineering?",
+      "answer_text": "Meet AI for",
+      "score": 2,
+      "feedback": "The answer was unclear and did not provide relevant information about their background.",
+      "relevance_to_job": 2
+    },
+    {
+      "question_number": 2,
+      "question_text": "Could you clarify which projects you've worked on and what your specific contributions were?",
+      "answer_text": "I walked the",
+      "score": 1,
+      "feedback": "The response was vague and did not address the question.",
+      "relevance_to_job": 1
+    },
+    {
+      "question_number": 3,
+      "question_text": "What technologies or algorithms did you use in this project?",
+      "answer_text": "I used Python",
+      "score": 4,
+      "feedback": "Basic mention of Python, but lacked depth regarding specific technologies or algorithms.",
+      "relevance_to_job": 5
+    },
+    {
+      "question_number": 4,
+      "question_text": "Can you describe any specific challenges you faced while working on the obstacle detection software and how you overcame them?",
+      "answer_text": "Yeah. So I",
+      "score": 2,
+      "feedback": "The answer was incomplete and did not provide a clear challenge or resolution.",
+      "relevance_to_job": 3
+    },
+    {
+      "question_number": 5,
+      "question_text": "Could you share an experience where you collaborated with others on a project?",
+      "answer_text": "I have I know this.",
+      "score": 1,
+      "feedback": "The response was unclear and did not provide relevant examples of teamwork.",
+      "relevance_to_job": 2
+    },
+    {
+      "question_number": 6,
+      "question_text": "Can you describe a particularly challenging problem you've faced in your work?",
+      "answer_text": "Yeah. I've got a problem.",
+      "score": 2,
+      "feedback": "The answer was vague and did not detail a specific problem or solution.",
+      "relevance_to_job": 2
+    },
+    {
+      "question_number": 7,
+      "question_text": "Could you describe your work ethic and how you approach deadlines and project goals?",
+      "answer_text": "Sometimes an update lies.",
+      "score": 2,
+      "feedback": "The answer was confusing and did not clearly convey their work ethic.",
+      "relevance_to_job": 3
+    }
+  ],
+  "skill_assessment": {
+    "required_skills_demonstrated_in_interview": {
+      "Python Programming": {
+        "interview_evidence": "Mentioned using Python for projects.",
+        "cv_verification": "verified",
+        "demonstration_quality": 4
+      }
+    },
+    "missing_critical_skills": [
+      "Deep understanding of AI algorithms",
+      "Experience with model training and evaluation"
+    ],
+    "additional_valuable_skills": [
+      "Adaptability under pressure"
+    ]
+  },
+  "recommendations": {
+    "hire_decision": "no",
+    "reasoning": "The candidate's interview performance was poor, with significant communication issues and a lack of clarity in their technical experience. The discrepancies between their interview responses and CV further diminish their candidacy.",
+    "interview_based_reasoning": "The candidate struggled to articulate their experience and provide relevant examples, which is crucial for the ML Engineer role.",
+    "cv_verification_impact": "The inconsistencies between the CV and interview responses raised concerns about the candidate's honesty and reliability.",
+    "next_steps": [
+      "Consider other candidates",
+      "Review interview techniques for clarity"
+    ],
+    "salary_range_suggestion": "N/A",
+    "onboarding_notes": "If hired, focus on improving communication skills and providing detailed examples in future discussions."
+  },
+  "cv_alignment": 5,
+  "cv_vs_interview_consistency": "medium"
+}

@@ -1,0 +1,72 @@
+# Docker
+# Build and push an image to Azure Container Registry
+# https://docs.microsoft.com/azure/devops/pipelines/languages/docker
+
+trigger:
+  branches:
+    include:
+      - main
+  paths:
+    include:
+      - backend/*
+
+pool:
+  name: ubuntu-latest1
+
+resources:
+- repo: self
+
+variables:
+  group: AI-SECRETS
+  # Container registry service connection established during pipeline creation
+  dockerRegistryServiceConnection: '1a756c72-e765-4d76-bdbb-6a5d5bf4ac60'
+  imageRepository: 'remotingai'
+  containerRegistry: 'remoting.azurecr.io'
+  dockerfilePath: '$(Build.SourcesDirectory)/backend/dockerfile'
+  buildContext: '$(Build.SourcesDirectory)/backend'
+  tag: 'backend-prod-latest'
+  SC: 'd01ccefb-f2da-4e1b-a7b0-35b38da0d007'
+  DB_HOST: $(DB_HOST-P)
+  DB_PASSWORD: $(DB_PASSWORD-P)
+  DB_USER: $(DB_USER-P)
+  DB_PORT: 3306
+  DB_NAME: $(DB_NAME-P)
+  CORE_APP_URL: $(CORE_APP_URL-P)
+  STORAGE_BASE_URL: $(STORAGE_BASE_URL-P)
+  SAS_TOKEN: $(SAS_TOKEN-P)
+  FRONTEND_URL: $(FRONTEND_URL-P)
+  # REFERER: $(REFERER-G)
+  # OPENAI_API_KEY: $(OPENAI_API_KEY-G)
+  # GROQ_API_KEY: $(GROQ_API_KEY-G)
+
+  AZURE_STORAGE_CONNECTION_STRING: $(AZURE_STORAGE_CONNECTION_STRING-P)
+  AZURE_STORAGE_ACCOUNT: $(AZURE_STORAGE_ACCOUNT-P)
+  AZURE_STORAGE_ACCESS_KEY: $(AZURE_STORAGE_ACCESS_KEY-P)
+  AZURE_STORAGE_DOMAINE: $(AZURE_STORAGE_DOMAINE-P)
+
+
+steps:
+- task: replacetokens@6
+  inputs:
+    root: '$(buildContext)'
+    sources: '.env'
+    tokenPattern: 'azpipelines'
+- task: Docker@2
+  displayName: 'Building the image'
+  inputs:
+    containerRegistry: '$(dockerRegistryServiceConnection)'
+    repository: '$(imageRepository)'
+    command: 'build'
+    Dockerfile: '$(dockerfilePath)'
+    buildContext: '$(buildContext)'
+    tags: $(tag)
+
+- script: |
+    docker save $(containerRegistry)/$(imageRepository):$(tag) -o $(Build.ArtifactStagingDirectory)/$(tag).tar
+  displayName: 'Save Docker image to tar file'
+- task: PublishBuildArtifacts@1
+  displayName: 'Publish build artifact'
+  inputs:
+    PathtoPublish: '$(Build.ArtifactStagingDirectory)'
+    ArtifactName: 'release'
+    publishLocation: 'Container'
