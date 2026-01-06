@@ -1,3 +1,8 @@
+# Environment variables
+.env
+.env.local
+.env.*.local
+
 # Python
 __pycache__/
 *.py[cod]
@@ -28,11 +33,6 @@ venv/
 ENV/
 env/
 
-# Environment variables
-.env
-.env.local
-.env.*.local
-
 # IDE
 .vscode/
 .idea/
@@ -54,21 +54,11 @@ logs/
 *.backup
 *.corrupted
 
-# Recordings and downloads (large files)
+# Recordings and downloads (optional - remove if you want to track these)
 recordings/
 downloads/
 azure_links/
 proctoring_reports/
 proctoring_videos/
 video_cache/
-
-# Node modules (for frontend)
-node_modules/
-agent-starter-react/node_modules/
-agent-starter-react/.next/
-agent-starter-react/.turbo/
-
-# Test files (optional - uncomment if you don't want to commit tests)
-# test_*.py
-# *_test.py
 
