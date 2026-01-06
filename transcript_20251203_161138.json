@@ -1,0 +1,212 @@
+{
+  "session_history": {
+    "items": [
+      {
+        "id": "item_3c3737d511af",
+        "type": "agent_handoff",
+        "new_agent_id": "default_agent"
+      },
+      {
+        "id": "item_7c1f1b26380c",
+        "type": "message",
+        "role": "assistant",
+        "content": [
+          "Hello! Welcome to your interview for the AI engineer position at RemoteAI. How are you doing today?"
+        ],
+        "interrupted": false,
+        "extra": {},
+        "metrics": {
+          "started_speaking_at": 1764771046.0582411,
+          "stopped_speaking_at": 1764771053.477985,
+          "llm_node_ttft": 2.144713909001439,
+          "tts_node_ttfb": 1.9345281120004074
+        }
+      },
+      {
+        "id": "item_ef9d85200fc2",
+        "type": "message",
+        "role": "user",
+        "content": [
+          "Okay. So let me just"
+        ],
+        "interrupted": false,
+        "transcript_confidence": 0.9082031,
+        "extra": {},
+        "metrics": {
+          "transcription_delay": 0.0,
+          "on_user_turn_completed_delay": 2.2519998310599476e-06
+        }
+      },
+      {
+        "id": "item_52f24ef11b5e",
+        "type": "message",
+        "role": "user",
+        "content": [
+          "go by tomorrow."
+        ],
+        "interrupted": false,
+        "transcript_confidence": 0.9301758,
+        "extra": {},
+        "metrics": {
+          "started_speaking_at": 1764771062.6939142,
+          "stopped_speaking_at": 1764771062.794817,
+          "transcription_delay": 0.0,
+          "end_of_turn_delay": 0.5004291534423828,
+          "on_user_turn_completed_delay": 1.7899983504321426e-06
+        }
+      },
+      {
+        "id": "item_ffa3d910e1bc",
+        "type": "message",
+        "role": "user",
+        "content": [
+          "If I'm done by tomorrow,"
+        ],
+        "interrupted": false,
+        "transcript_confidence": 0.9970703,
+        "extra": {},
+        "metrics": {
+          "transcription_delay": 0.0,
+          "on_user_turn_completed_delay": 2.1850028133485466e-06
+        }
+      },
+      {
+        "id": "item_60a67330cc60",
+        "type": "message",
+        "role": "assistant",
+        "content": [
+          "It seems like there might have been a misunderstanding. That's okay! Take your time; I just want to make sure you\u2019re"
+        ],
+        "interrupted": true,
+        "extra": {},
+        "metrics": {
+          "started_speaking_at": 1764771067.022031,
+          "stopped_speaking_at": 1764771074.0594509,
+          "llm_node_ttft": 0.8089418529998511,
+          "tts_node_ttfb": 1.2426980929994897
+        }
+      },
+      {
+        "id": "item_8b75c843418d",
+        "type": "message",
+        "role": "user",
+        "content": [
+          "Just let me know I can get everybody. On the call."
+        ],
+        "interrupted": false,
+        "transcript_confidence": 0.9235839800000001,
+        "extra": {},
+        "metrics": {
+          "transcription_delay": 0.0,
+          "on_user_turn_completed_delay": 2.4090004444587976e-06
+        }
+      },
+      {
+        "id": "item_0027809d9491",
+        "type": "message",
+        "role": "user",
+        "content": [
+          "Alright, sir."
+        ],
+        "interrupted": false,
+        "transcript_confidence": 0.8942871,
+        "extra": {},
+        "metrics": {
+          "transcription_delay": 0.0,
+          "on_user_turn_completed_delay": 3.378001565579325e-06
+        }
+      },
+      {
+        "id": "item_57bd90f6ddc0",
+        "type": "message",
+        "role": "user",
+        "content": [
+          "What's up? Okay."
+        ],
+        "interrupted": false,
+        "transcript_confidence": 0.80322266,
+        "extra": {},
+        "metrics": {
+          "transcription_delay": 0.0,
+          "on_user_turn_completed_delay": 1.9239996618125588e-06
+        }
+      },
+      {
+        "id": "item_49d7b512b4fb",
+        "type": "message",
+        "role": "assistant",
+        "content": [
+          "I appreciate your enthusiasm! Let's shift our focus back to the interview. \n\nTo start, could you please confirm that you're comfortable with the terms of the role,"
+        ],
+        "interrupted": true,
+        "extra": {},
+        "metrics": {
+          "started_speaking_at": 1764771080.627879,
+          "stopped_speaking_at": 1764771092.5685408,
+          "llm_node_ttft": 0.719292048997886,
+          "tts_node_ttfb": 1.4565294630010612
+        }
+      },
+      {
+        "id": "item_a366588d1f30",
+        "type": "message",
+        "role": "user",
+        "content": [
+          "Hello."
+        ],
+        "interrupted": false,
+        "transcript_confidence": 0.73291016,
+        "extra": {},
+        "metrics": {
+          "started_speaking_at": 1764771090.369822,
+          "stopped_speaking_at": 1764771091.469156,
+          "transcription_delay": 1.0903098583221436,
+          "end_of_turn_delay": 1.0940558910369873,
+          "on_user_turn_completed_delay": 4.748999344883487e-06
+        }
+      },
+      {
+        "id": "item_aed89395907f",
+        "type": "message",
+        "role": "user",
+        "content": [
+          "I'm"
+        ],
+        "interrupted": false,
+        "transcript_confidence": 0.69299316,
+        "extra": {},
+        "metrics": {
+          "started_speaking_at": 1764771093.026125,
+          "stopped_speaking_at": 1764771093.139272,
+          "transcription_delay": 0.7510910034179688,
+          "end_of_turn_delay": 0.75177001953125,
+          "on_user_turn_completed_delay": 1.3078999472782016e-05
+        }
+      },
+      {
+        "id": "item_31eefa03e88a",
+        "type": "message",
+        "role": "user",
+        "content": [
+          "So for me,"
+        ],
+        "interrupted": false,
+        "transcript_confidence": 0.92089844,
+        "extra": {},
+        "metrics": {
+          "started_speaking_at": 1764771094.635969,
+          "stopped_speaking_at": 1764771095.73489,
+          "transcription_delay": 0.8012678623199463,
+          "end_of_turn_delay": 0.8035829067230225,
+          "on_user_turn_completed_delay": 2.4360015231650323e-06
+        }
+      }
+    ]
+  },
+  "real_time_transcript": {
+    "user_transcript": "",
+    "agent_transcript": "",
+    "conversation_history": []
+  },
+  "timestamp": "20251203_161138"
+}

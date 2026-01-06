@@ -1,5 +1,74 @@
-ai/
-.vscode/
+# Python
 __pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+env/
+venv/
+ENV/
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+
+# Virtual environments
+venv/
+ENV/
+env/
+
+# Environment variables
 .env
-auto_db.sqlite
+.env.local
+.env.*.local
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log
+logs/
+
+# Temporary files
+*.tmp
+*.bak
+*.backup
+*.corrupted
+
+# Recordings and downloads (large files)
+recordings/
+downloads/
+azure_links/
+proctoring_reports/
+proctoring_videos/
+video_cache/
+
+# Node modules (for frontend)
+node_modules/
+agent-starter-react/node_modules/
+agent-starter-react/.next/
+agent-starter-react/.turbo/
+
+# Test files (optional - uncomment if you don't want to commit tests)
+# test_*.py
+# *_test.py
+

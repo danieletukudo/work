@@ -1,0 +1,32 @@
+# LiveKit Agent Dependencies
+livekit
+livekit-agents
+livekit-plugins-deepgram
+livekit-plugins-elevenlabs
+livekit-plugins-openai
+livekit-plugins-silero
+
+# Environment and utilities
+python-dotenv
+humanfriendly
+aiohttp
+
+# Video/Audio processing
+opencv-python
+numpy
+
+# Azure Storage
+azure-storage-blob
+
+# FastAPI Server (modern async API framework)
+fastapi
+uvicorn[standard]
+pydantic
+
+# Flask (backup - api_server_flask_backup.py)
+flask
+flask-cors
+
+# Protobuf (for LiveKit)
+protobuf
+

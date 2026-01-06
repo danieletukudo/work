@@ -1,0 +1,30 @@
+version: '3.8'
+
+services:
+  livekit-services:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: livekit-services
+    ports:
+      - "5001:5001"
+    env_file:
+      - .env
+    volumes:
+      # Mount directories for persistent storage
+      - ./recordings:/app/recordings
+      - ./downloads:/app/downloads
+      - ./azure_links:/app/azure_links
+      - ./proctoring_reports:/app/proctoring_reports
+      - ./proctoring_videos:/app/proctoring_videos
+      - ./video_cache:/app/video_cache
+      # Mount .env file if you want to edit it without rebuilding
+      - ./.env:/app/.env
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('http://localhost:5001/health').read()"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+

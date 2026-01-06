@@ -1,0 +1,51 @@
+{
+  "session_history": {
+    "items": [
+      {
+        "id": "item_c06b4e901753",
+        "type": "agent_handoff",
+        "new_agent_id": "default_agent"
+      },
+      {
+        "id": "item_6068db748335",
+        "type": "message",
+        "role": "assistant",
+        "content": [
+          "Hello! Welcome to your interview with Remote.ai. How are you doing today?"
+        ],
+        "interrupted": false,
+        "extra": {},
+        "metrics": {
+          "started_speaking_at": 1764828892.4803982,
+          "stopped_speaking_at": 1764828898.178737,
+          "llm_node_ttft": 1.5320100789977005,
+          "tts_node_ttfb": 1.295111949002603
+        }
+      },
+      {
+        "id": "item_4059fef59357",
+        "type": "message",
+        "role": "user",
+        "content": [
+          "I'm good. Thank you."
+        ],
+        "interrupted": false,
+        "transcript_confidence": 1.0,
+        "extra": {},
+        "metrics": {
+          "started_speaking_at": 1764828899.218894,
+          "stopped_speaking_at": 1764828900.0698922,
+          "transcription_delay": 0.6952886581420898,
+          "end_of_turn_delay": 0.6957218647003174,
+          "on_user_turn_completed_delay": 1.844004145823419e-06
+        }
+      }
+    ]
+  },
+  "real_time_transcript": {
+    "user_transcript": "",
+    "agent_transcript": "",
+    "conversation_history": []
+  },
+  "timestamp": "20251204_081506"
+}
