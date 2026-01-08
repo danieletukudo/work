@@ -38,7 +38,7 @@ export function ConnectionProvider({ appConfig, children }: ConnectionProviderPr
   const tokenSource = useMemo(() => {
     // Use Python Flask API server for connection details
     // This uses the Python environment which has all LiveKit credentials configured
-    const PYTHON_API_ENDPOINT = process.env.NEXT_PUBLIC_CONN_DETAILS_ENDPOINT || 'https://heuristically-unpreventive-dimple.ngrok-free.dev/api/connection-details';
+    const PYTHON_API_ENDPOINT = process.env.NEXT_PUBLIC_CONN_DETAILS_ENDPOINT || 'http://0.0.0.0:5001/api/connection-details';
     
     return TokenSource.custom(async () => {
       try {

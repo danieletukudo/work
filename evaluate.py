@@ -1,4 +1,8 @@
 from typing import List, Dict, Optional
+from prompt import get_evaluation_instruction, prepare_api_payload
+from prompt import get_simple_evaluation_prompt
+from prompt import load_evaluation_data_from_files
+from prompt import load_transcript_from_file
 import json
 import re
 from openai import OpenAI
@@ -38,7 +42,6 @@ def evaluate_interview_comprehensive(
     Returns:
         Dict: Comprehensive evaluation including scores and feedback
     """
-    from prompt import get_evaluation_instruction, prepare_api_payload
     
     # Generate evaluation prompt
     evaluation_prompt = get_evaluation_instruction(
@@ -83,10 +86,7 @@ def evaluate_interview_comprehensive(
             return result
             
         except Exception as e:
-            print(f" API call failed: {e}")
-            print("Falling back to local OpenAI evaluation...")
-            # Fall through to local evaluation
-    
+                pass
     # Local evaluation using OpenAI
     try:
         response = client.chat.completions.create(
@@ -117,8 +117,6 @@ def evaluate_interview_comprehensive(
                     else:
                         raise ValueError("No JSON found in response")
             except:
-                print("\nDebug - Raw response from API:")
-                print(raw_response)
                 raise
 
         # Validate and set default values for required fields
@@ -151,11 +149,7 @@ def evaluate_interview_comprehensive(
         evaluation["candidate_name"] = candidate_info.get("candidate_name", "N/A")
         evaluation["job_id"] = candidate_info.get("job_id", "N/A")
 
-    except Exception as e:
-        print(f"Error during evaluation: {e}")
-        import traceback
-        traceback.print_exc()
-        # Return a default evaluation structure
+    except Exception as e:        # Return a default evaluation structure
         evaluation = {
             "candidate_id": candidate_info.get("candidate_id", "N/A"),
             "candidate_name": candidate_info.get("candidate_name", "N/A"),
@@ -198,7 +192,6 @@ def evaluate_interview(job_role: str, interview_data: Dict) -> Dict:
     Returns:
         Dict: Structured evaluation including scores and feedback
     """
-    from prompt import get_simple_evaluation_prompt
     
     # Extract Q&A pairs from the JSON structure
     qa_pairs = interview_data.get("job_transcript", [])
@@ -234,8 +227,6 @@ def evaluate_interview(job_role: str, interview_data: Dict) -> Dict:
                     else:
                         raise ValueError("No JSON found in response")
             except:
-                print("\nDebug - Raw response from API:")
-                print(raw_response)
                 raise
 
         # Validate required fields
@@ -256,7 +247,6 @@ def evaluate_interview(job_role: str, interview_data: Dict) -> Dict:
                     evaluation[field] = "Not provided"
 
     except Exception as e:
-        print(f"Error during evaluation: {e}")
         # Return a default evaluation structure
         evaluation = {
             "overall_score": 5,
@@ -299,7 +289,6 @@ def evaluate_from_files(
     Returns:
         Dict: Evaluation results
     """
-    from prompt import load_evaluation_data_from_files
     
     # Load data from files using prompt.py function
     data = load_evaluation_data_from_files(
@@ -318,69 +307,6 @@ def evaluate_from_files(
         evaluation_instruction=evaluation_instruction,
         use_api=use_api
     )
-
-
-def test_evaluation():
-    """Test function to demonstrate how to use the evaluate_interview function"""
-
-    # Load the JSON data from fi.json
-    try:
-        with open("fi.json", "r") as f:
-            interview_data = json.load(f)
-
-        # Evaluate the interview
-        job_role = "AI Engineer"
-        evaluation = evaluate_interview(job_role, interview_data)
-
-        # Print the results
-        print("=" * 60)
-        print("INTERVIEW EVALUATION RESULTS")
-        print("=" * 60)
-        print(f"Job Role: {job_role}")
-        print(f"Overall Score: {evaluation['overall_score']}/10")
-        print(f"Hiring Recommendation: {evaluation['hiring_recommendation']}")
-        print()
-
-        print("CATEGORY SCORES:")
-        print(f"  Technical Competency: {evaluation['technical_competency']}/10")
-        print(f"  Problem Solving: {evaluation['problem_solving']}/10")
-        print(f"  Communication: {evaluation['communication']}/10")
-        print(f"  Experience Level: {evaluation['experience_level']}/10")
-        print(f"  Cultural Fit: {evaluation['cultural_fit']}/10")
-        print()
-
-        print("STRENGTHS:")
-        for strength in evaluation['strengths']:
-            print(f"  • {strength}")
-        print()
-
-        print("AREAS FOR IMPROVEMENT:")
-        for area in evaluation['areas_for_improvement']:
-            print(f"  • {area}")
-        print()
-
-        print("DETAILED FEEDBACK:")
-        print(evaluation['detailed_feedback'])
-        print()
-
-        print("INDIVIDUAL QUESTION SCORES:")
-        print("-" * 40)
-        for q_score in evaluation['individual_question_scores']:
-            print(f"Question {q_score['question_number']}: {q_score['score']}/10")
-            print(f"Q: {q_score['question_text']}")
-            print(f"A: {q_score['answer_text']}")
-            print(f"Feedback: {q_score['feedback']}")
-            print("-" * 40)
-
-        # Save the evaluation to a file
-        with open("evaluation_result.json", "w") as f:
-            json.dump(evaluation, f, indent=2)
-        print(f"\nEvaluation saved to evaluation_result.json")
-
-    except FileNotFoundError:
-        print("Error: fi.json file not found. Please make sure the file exists.")
-    except Exception as e:
-        print(f"Error: {e}")
 
 
 def example_usage():
@@ -470,7 +396,6 @@ def example_usage():
     }
     
     # Run evaluation
-    print("Running comprehensive evaluation...")
     evaluation = evaluate_interview_comprehensive(
         job_description=example_data["job_description"],
         candidate_cv=example_data["candidate_cv"],
@@ -484,40 +409,32 @@ def example_usage():
     with open("evaluation_result.json", "w") as f:
         json.dump(evaluation, f, indent=2)
     
-    print("\n" + "=" * 60)
-    print("EVALUATION RESULTS")
-    print("=" * 60)
-    print(f"Candidate: {evaluation.get('candidate_name', 'N/A')}")
-    print(f"Overall Score: {evaluation.get('overall_score', 'N/A')}/10")
-    print(f"Hiring Recommendation: {evaluation.get('hiring_recommendation', 'N/A')}")
-    print("\nEvaluation saved to evaluation_result.json")
     
     return evaluation
 
 
 if __name__ == "__main__":
-    import sys
-    
-    if len(sys.argv) > 1:
-        # If transcript path provided, use it
-        from prompt import load_transcript_from_file
-        
-        transcript_path = sys.argv[1]
-        
+    # import sys
+    #
+    # if len(sys.argv) > 1:
+    #     # If transcript path provided, use it
+
+        # transcript_path = sys.argv[1]
+
         # Example: Load transcript and run evaluation
         # You would need to provide job_description, candidate_cv, and candidate_info
-        print(f"Loading transcript from: {transcript_path}")
-        transcript = load_transcript_from_file(transcript_path)
+        # print(f"Loading transcript from: {transcript_path}")
+        transcript = load_transcript_from_file("/Users/danielsamuel/Documents/can_show_in_frontend/transcript_20251209_135356.json")
         
         # For demo, use example data structure
         # In production, load these from files or API
         example_data = {
             "job_description": {
-                "title": "Data Scientist",
+                "title": "ML Engineer",
                 "department": "Technology & Innovation",
                 "location": "Remote",
                 "employment_type": "Full-time",
-                "summary": "We are seeking a Data Scientist...",
+                "summary": "ML Engineer",
                 "responsibilities": [],
                 "requirements": [],
                 "skills": []
@@ -546,7 +463,8 @@ if __name__ == "__main__":
 
         with open("evaluation_result.json", "w") as f:
             json.dump(evaluation, f, indent=2)
-        print(f"\nEvaluation saved to evaluation_result.json")
-    else:
-        # Run example usage
-        example_usage()
+
+        print(evaluation)
+    # else:
+    #     # Run example usage
+    #     example_usage()

@@ -38,9 +38,7 @@ class AzureVideoStorage:
         try:
             self.blob_service_client = BlobServiceClient.from_connection_string(AZURE_CONNECTION_STRING)
             self.container_name = BLOB_CONTAINER
-            logger.info(f"Azure Blob Storage client initialized for container: {self.container_name}")
         except Exception as e:
-            logger.error(f"Failed to initialize Azure Blob Storage client: {e}")
             raise
     
     def upload_video(
@@ -63,13 +61,11 @@ class AzureVideoStorage:
         Example:
             storage = AzureVideoStorage()
             result = storage.upload_video("recordings/user123_20250104.mp4")
-            print(f"Video URL: {result['blob_url']}")
         """
         try:
             # Check if file exists
             if not os.path.exists(local_file_path):
                 error_msg = f"File not found: {local_file_path}"
-                logger.error(error_msg)
                 return {
                     "success": False,
                     "error": error_msg,
@@ -79,7 +75,6 @@ class AzureVideoStorage:
             
             # Get file size
             file_size = os.path.getsize(local_file_path)
-            logger.info(f"Uploading file: {local_file_path} (Size: {file_size / (1024*1024):.2f} MB)")
             
             # Generate blob name if not provided
             if blob_name is None:
@@ -96,7 +91,6 @@ class AzureVideoStorage:
             )
             
             # Upload file
-            logger.info(f"Uploading to blob: {blob_name}")
             with open(local_file_path, "rb") as data:
                 blob_client.upload_blob(data, overwrite=True)
             
@@ -106,7 +100,6 @@ class AzureVideoStorage:
             else:
                 blob_url = f"{AZURE_STORAGE_URL}/{self.container_name}/{blob_name}"
             
-            logger.info(f" Upload successful! URL: {blob_url}")
             
             return {
                 "success": True,
@@ -118,7 +111,6 @@ class AzureVideoStorage:
             
         except Exception as e:
             error_msg = f"Failed to upload video: {str(e)}"
-            logger.error(error_msg)
             return {
                 "success": False,
                 "error": error_msg,
@@ -150,7 +142,6 @@ class AzureVideoStorage:
             result = storage.download_video("videos/user123_20250104.mp4")
             # Using full URL
             result = storage.download_video("https://storage.azure.com/container/videos/video.mp4?sv=...")
-            print(f"Downloaded to: {result['local_file_path']}")
         """
         try:
             # Extract blob name from URL if full URL is provided
@@ -165,7 +156,6 @@ class AzureVideoStorage:
                     blob_name = path_parts[1]
                 else:
                     blob_name = path_parts[0]
-                logger.info(f"Extracted blob name from URL: {blob_name}")
             
             # Generate local file path if not provided
             if local_file_path is None:
@@ -185,7 +175,6 @@ class AzureVideoStorage:
             # Check if blob exists
             if not blob_client.exists():
                 error_msg = f"Blob not found: {blob_name}"
-                logger.error(error_msg)
                 return {
                     "success": False,
                     "error": error_msg,
@@ -193,12 +182,10 @@ class AzureVideoStorage:
                 }
             
             # Download blob
-            logger.info(f"Downloading blob: {blob_name}")
             with open(local_file_path, "wb") as download_file:
                 download_file.write(blob_client.download_blob().readall())
             
             file_size = os.path.getsize(local_file_path)
-            logger.info(f" Download successful! File saved to: {local_file_path} (Size: {file_size / (1024*1024):.2f} MB)")
             
             return {
                 "success": True,
@@ -209,7 +196,6 @@ class AzureVideoStorage:
             
         except Exception as e:
             error_msg = f"Failed to download video: {str(e)}"
-            logger.error(error_msg)
             return {
                 "success": False,
                 "error": error_msg,
@@ -238,11 +224,9 @@ class AzureVideoStorage:
                     "url": f"{AZURE_STORAGE_URL}/{self.container_name}/{blob.name}"
                 })
             
-            logger.info(f"Found {len(blobs)} videos in {subfolder}/")
             return blobs
             
         except Exception as e:
-            logger.error(f"Failed to list videos: {e}")
             return []
     
     def delete_video(self, blob_name: str) -> dict:
@@ -268,7 +252,6 @@ class AzureVideoStorage:
                 }
             
             blob_client.delete_blob()
-            logger.info(f" Deleted blob: {blob_name}")
             
             return {
                 "success": True,
@@ -277,7 +260,6 @@ class AzureVideoStorage:
             
         except Exception as e:
             error_msg = f"Failed to delete video: {str(e)}"
-            logger.error(error_msg)
             return {
                 "success": False,
                 "error": error_msg
@@ -335,7 +317,6 @@ def upload_video_to_azure(local_file_path: str, blob_name: Optional[str] = None)
     Example:
         result = upload_video_to_azure("recordings/user123_20250104.mp4")
         if result['success']:
-            print(f"Video uploaded! URL: {result['blob_url']}")
     """
     storage = AzureVideoStorage()
     return storage.upload_video(local_file_path, blob_name)
@@ -361,7 +342,6 @@ def download_video_from_azure(blob_name_or_url: str, local_file_path: Optional[s
         # With custom download folder
         result = download_video_from_azure("videos/video.mp4", download_folder="my_downloads")
         if result['success']:
-            print(f"Video downloaded to: {result['local_file_path']}")
     """
     storage = AzureVideoStorage()
     return storage.download_video(blob_name_or_url, local_file_path, download_folder)
@@ -381,7 +361,6 @@ def upload_transcript_to_azure(local_file_path: str, blob_name: Optional[str] = 
     Example:
         result = upload_transcript_to_azure("transcript_20250104.json")
         if result['success']:
-            print(f"Transcript uploaded! URL: {result['blob_url']}")
     """
     storage = AzureVideoStorage()
     return storage.upload_transcript(local_file_path, blob_name)
@@ -404,9 +383,7 @@ def download_from_link_file(links_file_path: str, download_video: bool = True,
     Example:
         result = download_from_link_file("azure_links/user_20250124_links.json")
         if result['video']['success']:
-            print(f"Video downloaded to: {result['video']['local_file_path']}")
         if result['transcript']['success']:
-            print(f"Transcript downloaded to: {result['transcript']['local_file_path']}")
     """
     import json
     
@@ -422,14 +399,12 @@ def download_from_link_file(links_file_path: str, download_video: bool = True,
         
         # Download video if requested and URL exists
         if download_video and video_url:
-            logger.info(f"Downloading video from: {video_url}")
             results['video'] = download_video_from_azure(video_url, download_folder=download_folder)
         else:
             results['video'] = {"success": False, "error": "Video URL not found or download skipped"}
         
         # Download transcript if requested and URL exists
         if download_transcript and transcript_url:
-            logger.info(f"Downloading transcript from: {transcript_url}")
             results['transcript'] = download_video_from_azure(transcript_url, download_folder=download_folder)
         else:
             results['transcript'] = {"success": False, "error": "Transcript URL not found or download skipped"}
@@ -438,21 +413,18 @@ def download_from_link_file(links_file_path: str, download_video: bool = True,
         
     except FileNotFoundError:
         error_msg = f"Links file not found: {links_file_path}"
-        logger.error(error_msg)
         return {
             "video": {"success": False, "error": error_msg},
             "transcript": {"success": False, "error": error_msg}
         }
     except json.JSONDecodeError as e:
         error_msg = f"Invalid JSON in links file: {e}"
-        logger.error(error_msg)
         return {
             "video": {"success": False, "error": error_msg},
             "transcript": {"success": False, "error": error_msg}
         }
     except Exception as e:
         error_msg = f"Failed to download from link file: {e}"
-        logger.error(error_msg)
         return {
             "video": {"success": False, "error": error_msg},
             "transcript": {"success": False, "error": error_msg}
@@ -466,7 +438,7 @@ if __name__ == "__main__":
     # Initialize storage
     try:
         storage = AzureVideoStorage()
-        # print(" Azure Storage client initialized\n")
+        # print("Azure Storage client initialized\n")
         
         # # Example 1: Upload a video
         # print("Example 1: Upload Video")
@@ -485,8 +457,7 @@ if __name__ == "__main__":
         # Example 3: Download a video
         # print("Example 3: Download Video")
         # print("-" * 50)
-        result = storage.download_video("https://remotingwork.blob.core.windows.net/uploads/transcripts/transcript_20251128_182926.json?sv=2022-11-02&ss=b&srt=o&sp=rwdlactf&se=2029-06-07T20:38:13Z&st=2024-06-07T12:38:13Z&spr=https,http&sig=7zyNgPz1ZpFFlBVbnNjB%2Bj94f9ZrvJcdppaAVY9BUWs%3D")
-
+        result = storage.download_video("https://remotingwork.blob.core.windows.net/uploads/videos/voice_assistant_user_60988ac9_20260108_133022_COMBINED.mp4")
     except Exception as e:
-        print(f" Error: {e}")
+        print(f"Error: {e}")
 

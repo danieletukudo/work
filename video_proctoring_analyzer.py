@@ -17,17 +17,34 @@ import logging
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
 
-# Initialize MediaPipe Face Mesh
-mp_face_mesh = mp.solutions.face_mesh
-mp_drawing = mp.solutions.drawing_utils
+from mediapipe.tasks import python
+from mediapipe.tasks.python import vision
 
-# Face mesh with iris landmarks - allow multiple faces
-face_mesh = mp_face_mesh.FaceMesh(
-    max_num_faces=10,
-    refine_landmarks=True,
-    min_detection_confidence=0.5,
-    min_tracking_confidence=0.5
+MODEL_PATH = os.path.join(
+    os.path.dirname(__file__),
+    "models/face_landmarker.task"
 )
+
+BaseOptions = python.BaseOptions
+FaceLandmarker = vision.FaceLandmarker
+FaceLandmarkerOptions = vision.FaceLandmarkerOptions
+RunningMode = vision.RunningMode
+
+face_landmarker_options = FaceLandmarkerOptions(
+    base_options=BaseOptions(model_asset_path=MODEL_PATH),
+    running_mode=RunningMode.VIDEO,
+    num_faces=10,
+    min_face_detection_confidence=0.5,
+    min_face_presence_confidence=0.5,
+    min_tracking_confidence=0.5,
+    output_face_blendshapes=False,
+    output_facial_transformation_matrixes=False
+)
+
+face_landmarker = FaceLandmarker.create_from_options(
+    face_landmarker_options
+)
+
 
 # Landmark indices for eyes and iris
 LEFT_IRIS = [474, 475, 476, 477]
@@ -145,7 +162,7 @@ def determine_gaze_direction(landmarks, img_w, img_h):
     else:
         vertical = "CENTER"
     
-    if horizontal == "CENTER" and vertical == "CENTER":
+    if horizontal == "CENTER"and vertical == "CENTER":
         direction = "CENTER"
     elif horizontal == "CENTER":
         direction = vertical
@@ -191,14 +208,14 @@ class GazeTracker:
             if self.direction_start_time is not None and self.current_direction is not None:
                 duration = current_time - self.direction_start_time
                 
-                if self.current_direction == "LEFT" or "LEFT" in self.current_direction:
+                if self.current_direction == "LEFT"or "LEFT"in self.current_direction:
                     self.left_duration += duration
                     self.left_events.append({
                         'timestamp': self.direction_start_time - self.start_time,
                         'duration': duration,
                         'movement_type': self.current_movement_type
                     })
-                elif self.current_direction == "RIGHT" or "RIGHT" in self.current_direction:
+                elif self.current_direction == "RIGHT"or "RIGHT"in self.current_direction:
                     self.right_duration += duration
                     self.right_events.append({
                         'timestamp': self.direction_start_time - self.start_time,
@@ -217,14 +234,14 @@ class GazeTracker:
         if self.direction_start_time is not None and self.current_direction is not None:
             duration = current_time - self.direction_start_time
             
-            if self.current_direction == "LEFT" or "LEFT" in self.current_direction:
+            if self.current_direction == "LEFT"or "LEFT"in self.current_direction:
                 self.left_duration += duration
                 self.left_events.append({
                     'timestamp': self.direction_start_time - self.start_time,
                     'duration': duration,
                     'movement_type': self.current_movement_type
                 })
-            elif self.current_direction == "RIGHT" or "RIGHT" in self.current_direction:
+            elif self.current_direction == "RIGHT"or "RIGHT"in self.current_direction:
                 self.right_duration += duration
                 self.right_events.append({
                     'timestamp': self.direction_start_time - self.start_time,
@@ -242,30 +259,30 @@ class GazeTracker:
         lines.append("=" * 80)
         lines.append(f"Total tracking time: {total_time:.2f} seconds ({total_time/60:.2f} minutes)")
         lines.append(f"\nLEFT GAZE:")
-        lines.append(f"  Total duration: {self.left_duration:.2f} seconds ({self.left_duration/60:.2f} minutes)")
-        lines.append(f"  Percentage of time: {(self.left_duration/total_time*100) if total_time > 0 else 0:.2f}%")
-        lines.append(f"  Number of events: {len(self.left_events)}")
+        lines.append(f"Total duration: {self.left_duration:.2f} seconds ({self.left_duration/60:.2f} minutes)")
+        lines.append(f"Percentage of time: {(self.left_duration/total_time*100) if total_time > 0 else 0:.2f}%")
+        lines.append(f"Number of events: {len(self.left_events)}")
         
         if self.left_events:
-            lines.append(f"  Events with timestamps:")
+            lines.append(f"Events with timestamps:")
             for i, event in enumerate(self.left_events[:10], 1):  # Limit to first 10
                 timestamp_str = f"{event['timestamp']:.2f}s"
                 duration_str = f"{event['duration']:.2f}s"
-                lines.append(f"    Event {i}: Time {timestamp_str}, Duration {duration_str}, Type: {event['movement_type']}")
+                lines.append(f"Event {i}: Time {timestamp_str}, Duration {duration_str}, Type: {event['movement_type']}")
             if len(self.left_events) > 10:
                 lines.append(f"    ... and {len(self.left_events) - 10} more events")
         
         lines.append(f"\nRIGHT GAZE:")
-        lines.append(f"  Total duration: {self.right_duration:.2f} seconds ({self.right_duration/60:.2f} minutes)")
-        lines.append(f"  Percentage of time: {(self.right_duration/total_time*100) if total_time > 0 else 0:.2f}%")
-        lines.append(f"  Number of events: {len(self.right_events)}")
+        lines.append(f"Total duration: {self.right_duration:.2f} seconds ({self.right_duration/60:.2f} minutes)")
+        lines.append(f"Percentage of time: {(self.right_duration/total_time*100) if total_time > 0 else 0:.2f}%")
+        lines.append(f"Number of events: {len(self.right_events)}")
         
         if self.right_events:
-            lines.append(f"  Events with timestamps:")
+            lines.append(f"Events with timestamps:")
             for i, event in enumerate(self.right_events[:10], 1):
                 timestamp_str = f"{event['timestamp']:.2f}s"
                 duration_str = f"{event['duration']:.2f}s"
-                lines.append(f"    Event {i}: Time {timestamp_str}, Duration {duration_str}, Type: {event['movement_type']}")
+                lines.append(f"Event {i}: Time {timestamp_str}, Duration {duration_str}, Type: {event['movement_type']}")
             if len(self.right_events) > 10:
                 lines.append(f"    ... and {len(self.right_events) - 10} more events")
         
@@ -275,8 +292,8 @@ class GazeTracker:
         right_eye_count = sum(1 for e in self.right_events if e['movement_type'] == 'EYE')
         
         lines.append(f"\nMOVEMENT TYPE BREAKDOWN:")
-        lines.append(f"  LEFT - Head turns: {left_head_count}, Eye movements: {left_eye_count}")
-        lines.append(f"  RIGHT - Head turns: {right_head_count}, Eye movements: {right_eye_count}")
+        lines.append(f"LEFT - Head turns: {left_head_count}, Eye movements: {left_eye_count}")
+        lines.append(f"RIGHT - Head turns: {right_head_count}, Eye movements: {right_eye_count}")
         lines.append("=" * 80)
         
         return "\n".join(lines)
@@ -336,17 +353,17 @@ class MultipleFaceTracker:
         lines.append("=" * 80)
         lines.append(f"Total tracking time: {total_time:.2f} seconds ({total_time/60:.2f} minutes)")
         lines.append(f"\nMULTIPLE FACES DETECTED:")
-        lines.append(f"  Total duration: {self.total_multiple_face_duration:.2f} seconds ({self.total_multiple_face_duration/60:.2f} minutes)")
-        lines.append(f"  Percentage of time: {(self.total_multiple_face_duration/total_time*100) if total_time > 0 else 0:.2f}%")
-        lines.append(f"  Number of periods: {len(self.multiple_face_events)}")
+        lines.append(f"Total duration: {self.total_multiple_face_duration:.2f} seconds ({self.total_multiple_face_duration/60:.2f} minutes)")
+        lines.append(f"Percentage of time: {(self.total_multiple_face_duration/total_time*100) if total_time > 0 else 0:.2f}%")
+        lines.append(f"Number of periods: {len(self.multiple_face_events)}")
         
         if self.multiple_face_events:
-            lines.append(f"  Periods with timestamps:")
+            lines.append(f"Periods with timestamps:")
             for i, event in enumerate(self.multiple_face_events[:10], 1):
                 timestamp_str = f"{event['timestamp']:.2f}s"
                 duration_str = f"{event['duration']:.2f}s"
                 num_faces = event.get('num_faces', 0)
-                lines.append(f"    Period {i}: Time {timestamp_str}, Duration {duration_str}, Faces: {num_faces}")
+                lines.append(f"Period {i}: Time {timestamp_str}, Duration {duration_str}, Faces: {num_faces}")
             if len(self.multiple_face_events) > 10:
                 lines.append(f"    ... and {len(self.multiple_face_events) - 10} more periods")
         
@@ -421,12 +438,19 @@ def analyze_video_proctoring(video_path: str, output_txt_path: str = None) -> di
             # Convert BGR to RGB for MediaPipe
             rgb_frame = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
             
-            # Process frame
-            results = face_mesh.process(rgb_frame)
-            
-            # Count faces
-            num_faces = len(results.multi_face_landmarks) if results.multi_face_landmarks else 0
-            
+            timestamp_ms = int(current_time * 1000)
+
+            # Create MediaPipe image
+            mp_image = mp.Image(
+                image_format=mp.ImageFormat.SRGB,
+                data=rgb_frame
+            )
+            # Perform face landmark detection
+            result = face_landmarker.detect_for_video(mp_image, timestamp_ms)
+
+            # Get number of faces detected
+            num_faces = len(result.face_landmarks)
+
             # Check for multiple faces
             if num_faces > 1:
                 if not multiple_face_tracker.is_tracking_multiple:
@@ -437,7 +461,7 @@ def analyze_video_proctoring(video_path: str, output_txt_path: str = None) -> di
                 if multiple_face_tracker.is_tracking_multiple:
                     multiple_face_tracker.end_multiple_face_period(current_time)
                 
-                face_landmarks = results.multi_face_landmarks[0]
+                face_landmarks = result.face_landmarks[0]
                 direction, movement_type = determine_gaze_direction(face_landmarks, w, h)
                 gaze_tracker.update(direction, movement_type, current_time)
                 processed_frames += 1
@@ -548,7 +572,8 @@ def analyze_video_proctoring(video_path: str, output_txt_path: str = None) -> di
             "error": error_msg,
             "report_text": None
         }
-
+    
+face_landmarker.close()
 
 if __name__ == "__main__":
     # Test with a video file
@@ -562,9 +587,9 @@ if __name__ == "__main__":
         
         if result['success']:
             print("\n" + result['report_text'])
-            print(f"\nReport saved to: {output_path}")
+            print(f"\n Report saved to: {output_path}")
         else:
-            print(f"\nError: {result['error']}")
+            print(f"\n Error: {result['error']}")
     else:
         print("Usage: python video_proctoring_analyzer.py <video_file.mp4>")
 

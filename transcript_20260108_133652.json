@@ -1,0 +1,22 @@
+{
+  "session_history": {
+    "items": [
+      {
+        "id": "item_d8c4b46eab11",
+        "type": "agent_handoff",
+        "new_agent_id": "default_agent"
+      }
+    ]
+  },
+  "real_time_transcript": {
+    "user_transcript": "",
+    "agent_transcript": "",
+    "conversation_history": []
+  },
+  "timestamp": "20260108_133652",
+  "interview_metadata": {
+    "job_title": "Customer Service Representative",
+    "candidate_name": "Max Well",
+    "appid": "211"
+  }
+}
